@@ -1,11 +1,14 @@
 "use client";
 
+import Link from "next/link";
+
 const links = [
-  { label: "Inicio", href: "#" },
-  { label: "Catálogo", href: "#catalogo" },
-  { label: "Financiamiento", href: "#financiamiento" },
-  { label: "Nosotros", href: "#nosotros" },
-  { label: "Contacto", href: "#contacto" },
+  { label: "Inicio", href: "/" },
+  { label: "Catálogo", href: "/vehiculos" },
+  { label: "Financiamiento", href: "/financiamiento" },
+  { label: "Vende tu auto", href: "/vende-tu-auto" },
+  { label: "Nosotros", href: "/nosotros" },
+  { label: "Contacto", href: "/contacto" },
 ];
 
 function InstagramIcon({ className }: { className?: string }) {
@@ -66,12 +69,12 @@ export default function Footer() {
             <ul className="space-y-2">
               {links.map((link) => (
                 <li key={link.label}>
-                  <a
+                  <Link
                     href={link.href}
                     className="text-sm text-muted-foreground transition-colors hover:text-white"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

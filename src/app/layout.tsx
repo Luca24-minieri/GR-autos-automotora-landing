@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Outfit, DM_Sans } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/providers/SmoothScroll";
+import Navbar from "@/components/sections/Navbar";
+import Footer from "@/components/sections/Footer";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -31,7 +33,11 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${outfit.variable} ${dmSans.variable} dark`}>
       <body className="min-h-screen bg-background text-foreground antialiased">
-        <SmoothScroll>{children}</SmoothScroll>
+        <SmoothScroll>
+          <Navbar />
+          {children}
+          <Footer />
+        </SmoothScroll>
       </body>
     </html>
   );

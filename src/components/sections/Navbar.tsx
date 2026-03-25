@@ -3,13 +3,16 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const links = [
-  { label: "Inicio", href: "#" },
-  { label: "Catálogo", href: "#catalogo" },
-  { label: "Financiamiento", href: "#financiamiento" },
-  { label: "Nosotros", href: "#nosotros" },
-  { label: "Contacto", href: "#contacto" },
+  { label: "Inicio", href: "/" },
+  { label: "Catálogo", href: "/vehiculos" },
+  { label: "Financiamiento", href: "/financiamiento" },
+  { label: "Vende tu auto", href: "/vende-tu-auto" },
+  { label: "Nosotros", href: "/nosotros" },
+  { label: "Contacto", href: "/contacto" },
 ];
 
 const WHATSAPP_URL =
@@ -18,14 +21,17 @@ const WHATSAPP_URL =
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > window.innerHeight * 0.8);
+      setScrolled(window.scrollY > (isHome ? window.innerHeight * 0.8 : 20));
     };
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [isHome]);
 
   useEffect(() => {
     if (mobileOpen) {
@@ -38,31 +44,33 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
+  const showBg = scrolled || !isHome;
+
   return (
     <>
       <nav
         className={`fixed top-0 left-0 z-50 w-full transition-colors duration-300 ${
-          scrolled
+          showBg
             ? "bg-[rgba(10,10,10,0.8)] backdrop-blur-[12px] border-b border-white/[0.06]"
             : "bg-transparent"
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 md:px-6 lg:px-8">
-          {/* Logo */}
-          <a href="#" className="font-display text-xl font-bold text-white md:text-2xl">
+          <Link href="/" className="font-display text-xl font-bold text-white md:text-2xl">
             GR Autos
-          </a>
+          </Link>
 
-          {/* Desktop links */}
           <div className="hidden items-center gap-8 md:flex">
             {links.map((link) => (
-              <a
+              <Link
                 key={link.label}
                 href={link.href}
-                className="text-sm text-white/70 transition-colors hover:text-white"
+                className={`text-sm transition-colors hover:text-white ${
+                  pathname === link.href ? "text-white" : "text-white/70"
+                }`}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
             <a
               href={WHATSAPP_URL}
@@ -74,7 +82,6 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Mobile hamburger */}
           <button
             className="flex items-center justify-center md:hidden"
             onClick={() => setMobileOpen(true)}
@@ -86,7 +93,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile fullscreen menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -109,17 +115,20 @@ export default function Navbar() {
 
             <div className="mt-12 flex flex-col gap-6">
               {links.map((link, i) => (
-                <motion.a
+                <motion.div
                   key={link.label}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="font-display text-3xl font-semibold text-white"
                   initial={{ opacity: 0, x: 40 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.1 + i * 0.05, duration: 0.3 }}
                 >
-                  {link.label}
-                </motion.a>
+                  <Link
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="font-display text-3xl font-semibold text-white"
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
               ))}
             </div>
 

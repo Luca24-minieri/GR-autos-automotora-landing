@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -174,6 +175,27 @@ export default function Hero() {
               </motion.span>
             ))}
           </div>
+
+          {/* CTA Dual */}
+          <motion.div
+            className="mt-8 flex flex-col items-center gap-3 sm:flex-row"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5, duration: 0.6, ease: "easeOut" }}
+          >
+            <Link
+              href="/vehiculos"
+              className="w-full rounded-full bg-gold px-8 py-3 text-center font-semibold text-black transition-colors hover:bg-gold-hover sm:w-auto"
+            >
+              Compra tu auto
+            </Link>
+            <Link
+              href="/vende-tu-auto"
+              className="w-full rounded-full border border-white/30 px-8 py-3 text-center font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
+            >
+              Vende tu auto
+            </Link>
+          </motion.div>
 
           {/* Scroll indicator */}
           <motion.div
