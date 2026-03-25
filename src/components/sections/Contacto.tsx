@@ -41,26 +41,34 @@ export default function Contacto() {
           onSubmit={(e) => e.preventDefault()}
         >
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <label className="sr-only" htmlFor="contacto-nombre">Nombre</label>
             <input
+              id="contacto-nombre"
               type="text"
               name="nombre"
               placeholder="Nombre"
               className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white placeholder:text-muted-foreground focus:border-gold focus:outline-none"
             />
+            <label className="sr-only" htmlFor="contacto-telefono">Teléfono</label>
             <input
+              id="contacto-telefono"
               type="tel"
               name="telefono"
               placeholder="Teléfono"
               className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white placeholder:text-muted-foreground focus:border-gold focus:outline-none"
             />
           </div>
+          <label className="sr-only" htmlFor="contacto-email">Email</label>
           <input
+            id="contacto-email"
             type="email"
             name="email"
             placeholder="Email"
             className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white placeholder:text-muted-foreground focus:border-gold focus:outline-none"
           />
+          <label className="sr-only" htmlFor="contacto-mensaje">Mensaje</label>
           <textarea
+            id="contacto-mensaje"
             name="mensaje"
             placeholder="Mensaje"
             rows={4}

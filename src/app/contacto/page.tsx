@@ -32,26 +32,34 @@ export default function ContactoPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <label className="sr-only" htmlFor="contacto-page-nombre">Nombre</label>
               <input
+                id="contacto-page-nombre"
                 type="text"
                 name="nombre"
                 placeholder="Nombre"
                 className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white placeholder:text-muted-foreground focus:border-gold focus:outline-none"
               />
+              <label className="sr-only" htmlFor="contacto-page-telefono">Teléfono</label>
               <input
+                id="contacto-page-telefono"
                 type="tel"
                 name="telefono"
                 placeholder="Teléfono"
                 className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white placeholder:text-muted-foreground focus:border-gold focus:outline-none"
               />
             </div>
+            <label className="sr-only" htmlFor="contacto-page-email">Email</label>
             <input
+              id="contacto-page-email"
               type="email"
               name="email"
               placeholder="Email"
               className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white placeholder:text-muted-foreground focus:border-gold focus:outline-none"
             />
+            <label className="sr-only" htmlFor="contacto-page-mensaje">Mensaje</label>
             <textarea
+              id="contacto-page-mensaje"
               name="mensaje"
               placeholder="Mensaje"
               rows={5}

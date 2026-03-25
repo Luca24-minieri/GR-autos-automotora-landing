@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { motion } from "motion/react";
 import { getMarcasUnicas, getModelosPorMarca, getVehiculos, formatPrecio } from "@/data/vehiculos";
 import {
@@ -44,9 +44,15 @@ const estados = ["Excelente", "Bueno", "Regular"];
 export default function VendeTuAutoPage() {
   const marcas = useMemo(() => getMarcasUnicas(), []);
   const [marca, setMarca] = useState("");
+  const [modelo, setModelo] = useState("");
   const [anoTasacion, setAnoTasacion] = useState("");
   const [kmTasacion, setKmTasacion] = useState("");
   const modelos = useMemo(() => (marca ? getModelosPorMarca(marca) : []), [marca]);
+
+  const handleMarcaChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setMarca(e.target.value);
+    setModelo("");
+  }, []);
 
   const estimacion = useMemo(() => {
     if (!marca || !anoTasacion || !kmTasacion) return null;
@@ -143,7 +149,7 @@ export default function VendeTuAutoPage() {
               <select
                 name="marca"
                 value={marca}
-                onChange={(e) => setMarca(e.target.value)}
+                onChange={handleMarcaChange}
                 className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white focus:border-gold focus:outline-none"
               >
                 <option value="">Marca</option>
@@ -153,7 +159,12 @@ export default function VendeTuAutoPage() {
                   </option>
                 ))}
               </select>
-              <select className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white focus:border-gold focus:outline-none">
+              <select
+                name="modelo"
+                value={modelo}
+                onChange={(e) => setModelo(e.target.value)}
+                className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white focus:border-gold focus:outline-none"
+              >
                 <option value="">Modelo</option>
                 {modelos.map((m) => (
                   <option key={m} value={m}>
@@ -176,12 +187,16 @@ export default function VendeTuAutoPage() {
               </select>
               <input
                 type="number"
+                name="kilometraje"
                 placeholder="Kilometraje"
                 value={kmTasacion}
                 onChange={(e) => setKmTasacion(e.target.value)}
                 className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white placeholder:text-muted-foreground focus:border-gold focus:outline-none"
               />
-              <select className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white focus:border-gold focus:outline-none">
+              <select
+                name="combustible"
+                className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white focus:border-gold focus:outline-none"
+              >
                 <option value="">Combustible</option>
                 {combustibles.map((c) => (
                   <option key={c} value={c}>
@@ -189,7 +204,10 @@ export default function VendeTuAutoPage() {
                   </option>
                 ))}
               </select>
-              <select className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white focus:border-gold focus:outline-none">
+              <select
+                name="transmision"
+                className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white focus:border-gold focus:outline-none"
+              >
                 <option value="">Transmisión</option>
                 {transmisiones.map((t) => (
                   <option key={t} value={t}>
@@ -197,7 +215,10 @@ export default function VendeTuAutoPage() {
                   </option>
                 ))}
               </select>
-              <select className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white focus:border-gold focus:outline-none md:col-span-2">
+              <select
+                name="estado"
+                className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white focus:border-gold focus:outline-none md:col-span-2"
+              >
                 <option value="">Estado general</option>
                 {estados.map((e) => (
                   <option key={e} value={e}>

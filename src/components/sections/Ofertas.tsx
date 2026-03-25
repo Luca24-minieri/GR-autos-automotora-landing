@@ -1,24 +1,29 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { getVehiculos, formatPrecio } from "@/data/vehiculos";
 
 export default function Ofertas() {
-  const ofertas = getVehiculos().filter((v) => v.precioAnterior);
+  const ofertas = useMemo(() => getVehiculos().filter((v) => v.precioAnterior), []);
   const x = useMotionValue(0);
   const springX = useSpring(x, { stiffness: 300, damping: 30 });
   const containerRef = useRef<HTMLDivElement>(null);
+  const [viewportWidth, setViewportWidth] = useState(1200);
+
+  useEffect(() => {
+    const update = () => setViewportWidth(Math.min(window.innerWidth, 1280));
+    update();
+    window.addEventListener("resize", update, { passive: true });
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   if (ofertas.length === 0) return null;
 
   const cardWidth = 340 + 16;
-  const maxDrag = -(
-    ofertas.length * cardWidth -
-    (typeof window !== "undefined" ? Math.min(window.innerWidth, 1280) : 1200)
-  );
+  const maxDrag = -(ofertas.length * cardWidth - viewportWidth);
 
   return (
     <section className="bg-surface-alt py-16 md:py-24">

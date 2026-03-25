@@ -7,7 +7,7 @@ import {
   filtrarVehiculos,
   ordenarVehiculos,
   getMarcasUnicas,
-  getVehiculoBySlug,
+  getVehiculos,
   type FiltrosVehiculo,
   type Vehiculo,
 } from "@/data/vehiculos";
@@ -63,13 +63,17 @@ export default function VehiculosPage() {
     return ordenarVehiculos(filtered, orden);
   }, [filtros, orden]);
 
+  const allVehiculos = useMemo(() => getVehiculos(), []);
   const compareVehiculos = useMemo(
-    () => compareIds.map((id) => resultados.find((v) => v.id === id)).filter(Boolean) as Vehiculo[],
-    [compareIds, resultados]
+    () => compareIds.map((id) => allVehiculos.find((v) => v.id === id)).filter(Boolean) as Vehiculo[],
+    [compareIds, allVehiculos]
   );
 
-  const totalPages = Math.ceil(resultados.length / PER_PAGE);
-  const paginated = resultados.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+  const totalPages = useMemo(() => Math.ceil(resultados.length / PER_PAGE), [resultados.length]);
+  const paginated = useMemo(
+    () => resultados.slice((page - 1) * PER_PAGE, page * PER_PAGE),
+    [resultados, page]
+  );
 
   function toggleFilter(
     key: "marcas" | "tipoVehiculo" | "combustible" | "transmision",
@@ -181,6 +185,7 @@ export default function VehiculosPage() {
             <select
               value={orden}
               onChange={(e) => setOrden(e.target.value)}
+              aria-label="Ordenar vehículos"
               className="rounded-lg border border-white/[0.06] bg-surface px-3 py-2 text-sm text-white"
             >
               <option value="recientes">Últimos agregados</option>
@@ -243,6 +248,7 @@ export default function VehiculosPage() {
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
+                  aria-label="Página anterior"
                   className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/[0.06] text-white disabled:opacity-30"
                 >
                   <ChevronLeft className="h-4 w-4" />
@@ -251,6 +257,8 @@ export default function VehiculosPage() {
                   <button
                     key={p}
                     onClick={() => setPage(p)}
+                    aria-label={`Ir a página ${p}`}
+                    aria-current={p === page ? "page" : undefined}
                     className={`flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium ${
                       p === page
                         ? "bg-gold text-black"
@@ -263,6 +271,7 @@ export default function VehiculosPage() {
                 <button
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={page === totalPages}
+                  aria-label="Página siguiente"
                   className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/[0.06] text-white disabled:opacity-30"
                 >
                   <ChevronRight className="h-4 w-4" />

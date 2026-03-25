@@ -10,9 +10,15 @@ interface Props {
 }
 
 function bestOf(vals: (number | undefined)[], mode: "min" | "max"): number {
-  const nums = vals.filter((v): v is number => v !== undefined);
-  if (nums.length === 0) return -1;
-  return mode === "min" ? vals.indexOf(Math.min(...nums)) : vals.indexOf(Math.max(...nums));
+  const indexed = vals
+    .map((v, i) => ({ v, i }))
+    .filter((x): x is { v: number; i: number } => x.v !== undefined);
+  if (indexed.length === 0) return -1;
+  const best =
+    mode === "min"
+      ? indexed.reduce((a, b) => (b.v < a.v ? b : a))
+      : indexed.reduce((a, b) => (b.v > a.v ? b : a));
+  return best.i;
 }
 
 export default function CompareModal({ vehiculos, onClose }: Props) {

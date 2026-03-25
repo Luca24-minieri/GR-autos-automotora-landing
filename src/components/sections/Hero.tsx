@@ -139,7 +139,10 @@ export default function Hero() {
             loop
             playsInline
             preload="auto"
-          />
+            aria-label="Interior de vehículo GR Autos"
+          >
+            <track kind="captions" srcLang="es" label="Español" default />
+          </video>
         </div>
 
         {/* Hero text */}

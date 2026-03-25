@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, use, useCallback } from "react";
+import { useState, use, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getVehiculoBySlug, getVehiculos, formatPrecio, type Vehiculo } from "@/data/vehiculos";
@@ -142,7 +142,6 @@ export default function VehiculoPage({ params }: { params: Promise<{ slug: strin
   const [contactPref, setContactPref] = useState("whatsapp");
   const [copied, setCopied] = useState(false);
   const [generatingPdf, setGeneratingPdf] = useState(false);
-  const pdfRef = useRef<HTMLDivElement>(null);
 
   const handleShare = useCallback(() => {
     if (!v) return;
@@ -321,7 +320,7 @@ export default function VehiculoPage({ params }: { params: Promise<{ slug: strin
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div ref={pdfRef} className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="mb-6 flex items-center gap-1 text-sm text-muted-foreground">
           <Link href="/" className="hover:text-white">
@@ -415,25 +414,33 @@ export default function VehiculoPage({ params }: { params: Promise<{ slug: strin
 
               {/* Contact form */}
               <form className="mt-6 space-y-3" onSubmit={(e) => e.preventDefault()}>
+                <label className="sr-only" htmlFor="ficha-nombre">Nombre</label>
                 <input
+                  id="ficha-nombre"
                   type="text"
                   name="nombre"
                   placeholder="Nombre"
                   className="w-full rounded-lg border border-white/[0.06] bg-background px-3 py-2.5 text-sm text-white placeholder:text-muted-foreground focus:border-gold focus:outline-none"
                 />
+                <label className="sr-only" htmlFor="ficha-telefono">Teléfono</label>
                 <input
+                  id="ficha-telefono"
                   type="tel"
                   name="telefono"
                   placeholder="Teléfono"
                   className="w-full rounded-lg border border-white/[0.06] bg-background px-3 py-2.5 text-sm text-white placeholder:text-muted-foreground focus:border-gold focus:outline-none"
                 />
+                <label className="sr-only" htmlFor="ficha-email">Email</label>
                 <input
+                  id="ficha-email"
                   type="email"
                   name="email"
                   placeholder="Email"
                   className="w-full rounded-lg border border-white/[0.06] bg-background px-3 py-2.5 text-sm text-white placeholder:text-muted-foreground focus:border-gold focus:outline-none"
                 />
+                <label className="sr-only" htmlFor="ficha-mensaje">Mensaje</label>
                 <textarea
+                  id="ficha-mensaje"
                   name="mensaje"
                   rows={2}
                   defaultValue={consultaMsg}

@@ -101,6 +101,7 @@ export default function VehicleCard({
           {showCompare && (
             <label
               data-testid="compare-checkbox"
+              aria-label={`${isCompared ? "Quitar de" : "Agregar a"} comparador: ${v.marca} ${v.modelo} ${v.ano}`}
               className={`flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full border transition-colors ${
                 isCompared
                   ? "border-gold bg-gold/20 text-gold"

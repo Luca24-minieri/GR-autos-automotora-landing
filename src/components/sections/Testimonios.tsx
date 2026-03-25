@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { Star } from "lucide-react";
 
@@ -60,12 +60,17 @@ export default function Testimonios() {
   const containerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const springX = useSpring(x, { stiffness: 300, damping: 30 });
+  const [viewportWidth, setViewportWidth] = useState(1200);
+
+  useEffect(() => {
+    const update = () => setViewportWidth(window.innerWidth);
+    update();
+    window.addEventListener("resize", update, { passive: true });
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   const cardWidth = 350 + 24; // card width + gap
-  const maxDrag = -(
-    testimonios.length * cardWidth -
-    (typeof window !== "undefined" ? window.innerWidth : 1200)
-  );
+  const maxDrag = -(testimonios.length * cardWidth - viewportWidth);
 
   return (
     <section className="overflow-hidden bg-surface-alt py-16 md:py-24">
