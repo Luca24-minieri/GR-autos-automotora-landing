@@ -232,7 +232,7 @@ export default function VendeTuAutoPage() {
             {estimacion && (
               <div className="rounded-lg border border-gold/30 bg-gold/5 p-5 text-center">
                 <p className="text-sm text-muted-foreground">Estimación referencial</p>
-                <p className="mt-1 font-display text-2xl font-bold text-gold md:text-3xl">
+                <p className="mt-1 break-words font-display text-xl font-bold text-gold md:text-2xl lg:text-3xl">
                   {formatPrecio(estimacion.min)} - {formatPrecio(estimacion.max)}
                 </p>
                 <p className="mt-2 text-xs text-muted-foreground">

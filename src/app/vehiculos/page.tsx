@@ -177,7 +177,7 @@ export default function VehiculosPage() {
         </h1>
 
         {/* Toolbar */}
-        <div className="mt-6 flex items-center justify-between">
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-muted-foreground">
             Mostrando {paginated.length} de {resultados.length} vehículos
           </p>
@@ -244,7 +244,7 @@ export default function VehiculosPage() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="mt-10 flex items-center justify-center gap-2">
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-2">
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
@@ -315,26 +315,26 @@ export default function VehiculosPage() {
       <AnimatePresence>
         {compareIds.length > 0 && (
           <motion.div
-            className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-4 rounded-full border border-white/[0.06] bg-surface px-6 py-3 shadow-xl"
+            className="fixed bottom-4 left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 items-center gap-2 rounded-full border border-white/[0.06] bg-surface px-4 py-2 shadow-xl sm:w-auto sm:gap-4 sm:px-6 sm:py-3"
             initial={{ y: 80, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 80, opacity: 0 }}
             transition={{ type: "spring", damping: 20, stiffness: 300 }}
           >
-            <span className="text-sm text-white">
-              {compareIds.length} vehículo{compareIds.length > 1 ? "s" : ""} seleccionado
-              {compareIds.length > 1 ? "s" : ""}
+            <span className="min-w-0 flex-1 truncate text-xs text-white sm:text-sm">
+              {compareIds.length} {compareIds.length > 1 ? "seleccionados" : "seleccionado"}
             </span>
             <button
               disabled={compareIds.length < 2}
               onClick={() => setShowCompare(true)}
-              className="flex items-center gap-2 rounded-full bg-gold px-5 py-2 text-sm font-semibold text-black transition-colors hover:bg-gold-hover disabled:opacity-40"
+              className="flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-3 py-2 text-xs font-semibold text-black transition-colors hover:bg-gold-hover disabled:opacity-40 sm:gap-2 sm:px-5 sm:text-sm"
             >
-              <GitCompareArrows className="h-4 w-4" /> Comparar
+              <GitCompareArrows className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <span>Comparar</span>
             </button>
             <button
               onClick={() => setCompareIds([])}
-              className="text-xs text-white/50 hover:text-white"
+              className="shrink-0 text-xs text-white/50 hover:text-white"
             >
               Limpiar
             </button>

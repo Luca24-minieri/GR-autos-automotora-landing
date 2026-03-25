@@ -116,9 +116,8 @@ body {
   width: 100%;
 }
 
-button,
-a,
-input,
+/* Touch targets mínimos — solo inputs de texto y selects visibles */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
 select,
 textarea {
   min-height: 44px;

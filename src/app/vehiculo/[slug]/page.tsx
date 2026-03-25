@@ -68,8 +68,8 @@ function FinancingTable({ v }: { v: Vehiculo }) {
           </button>
         ))}
       </div>
-      <div className="mt-3 overflow-hidden rounded-lg border border-white/[0.06]">
-        <table className="w-full text-sm">
+      <div className="mt-3 overflow-x-auto rounded-lg border border-white/[0.06]">
+        <table className="w-full min-w-[280px] text-sm">
           <thead>
             <tr className="border-b border-white/[0.06] bg-surface-alt">
               <th className="px-4 py-2.5 text-left font-medium text-white/60">Cuotas</th>
@@ -124,12 +124,12 @@ function SpecTable({ v }: { v: Vehiculo }) {
       {specs.map(([label, value], i) => (
         <div
           key={label}
-          className={`flex justify-between px-4 py-2.5 text-sm ${
+          className={`flex items-start justify-between gap-4 px-4 py-2.5 text-sm ${
             i % 2 === 0 ? "bg-surface" : "bg-surface-alt"
           }`}
         >
-          <span className="text-muted-foreground">{label}</span>
-          <span className="font-medium text-white">{value}</span>
+          <span className="shrink-0 text-muted-foreground">{label}</span>
+          <span className="text-right font-medium text-white">{value}</span>
         </div>
       ))}
     </div>
@@ -322,16 +322,16 @@ export default function VehiculoPage({ params }: { params: Promise<{ slug: strin
       />
       <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
         {/* Breadcrumb */}
-        <nav className="mb-6 flex items-center gap-1 text-sm text-muted-foreground">
-          <Link href="/" className="hover:text-white">
+        <nav className="mb-6 flex min-w-0 flex-wrap items-center gap-1 text-sm text-muted-foreground">
+          <Link href="/" className="shrink-0 hover:text-white">
             Inicio
           </Link>
-          <ChevronRight className="h-3.5 w-3.5" />
-          <Link href="/vehiculos" className="hover:text-white">
+          <ChevronRight className="h-3.5 w-3.5 shrink-0" />
+          <Link href="/vehiculos" className="shrink-0 hover:text-white">
             Vehículos
           </Link>
-          <ChevronRight className="h-3.5 w-3.5" />
-          <span className="text-white">
+          <ChevronRight className="h-3.5 w-3.5 shrink-0" />
+          <span className="min-w-0 truncate text-white">
             {v.marca} {v.modelo} {v.ano}
           </span>
         </nav>

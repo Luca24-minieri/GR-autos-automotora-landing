@@ -47,13 +47,17 @@ export default function CompareModal({ vehiculos, onClose }: Props) {
     <div className="fixed inset-0 z-[70] flex flex-col bg-background/95 backdrop-blur-sm">
       <div className="flex items-center justify-between border-b border-white/[0.06] px-4 py-4 md:px-6">
         <h2 className="font-display text-xl font-bold text-white">Comparar vehículos</h2>
-        <button onClick={onClose} aria-label="Cerrar comparador">
+        <button
+          onClick={onClose}
+          aria-label="Cerrar comparador"
+          className="flex h-11 w-11 items-center justify-center rounded-full hover:bg-white/5"
+        >
           <X className="h-6 w-6 text-white" />
         </button>
       </div>
 
-      <div className="flex-1 overflow-x-auto overflow-y-auto">
-        <div className="min-w-[600px]">
+      <div className="flex-1 overflow-x-auto overflow-y-auto overscroll-x-contain">
+        <div className="min-w-[560px]">
           {/* Headers */}
           <div
             className="sticky top-0 z-10 grid border-b border-white/[0.06] bg-background"

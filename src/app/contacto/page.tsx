@@ -77,7 +77,7 @@ export default function ContactoPage() {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3 font-medium text-white transition-opacity hover:opacity-90 md:w-auto md:inline-flex"
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3 font-medium text-white transition-opacity hover:opacity-90 md:w-auto md:inline-flex"
               >
                 <MessageCircle className="h-5 w-5" />
                 Escribir por WhatsApp

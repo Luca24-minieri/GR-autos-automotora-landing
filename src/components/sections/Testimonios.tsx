@@ -39,7 +39,7 @@ const testimonios = [
 
 function TestimonioCard({ t }: { t: { name: string; initials: string; text: string } }) {
   return (
-    <div className="flex w-[300px] shrink-0 flex-col rounded-lg border border-white/[0.06] bg-surface p-6 md:w-[350px]">
+    <div className="flex w-[min(300px,80vw)] shrink-0 snap-start flex-col rounded-lg border border-white/[0.06] bg-surface p-6 md:w-[350px]">
       <div className="flex gap-1">
         {Array.from({ length: 5 }).map((_, i) => (
           <Star key={i} className="h-4 w-4 fill-gold text-gold" />
@@ -69,7 +69,9 @@ export default function Testimonios() {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  const cardWidth = 350 + 24; // card width + gap
+  // En mobile (< 768px) las cards son 80vw, en desktop son 350px fijo
+  const cardW = viewportWidth < 768 ? Math.min(350, viewportWidth * 0.8) : 350;
+  const cardWidth = cardW + 24; // card width + gap
   const maxDrag = -(testimonios.length * cardWidth - viewportWidth);
 
   return (
@@ -88,7 +90,7 @@ export default function Testimonios() {
 
       <motion.div
         ref={containerRef}
-        className="mt-10 flex cursor-grab gap-6 px-4 active:cursor-grabbing md:px-6 lg:px-8"
+        className="mt-10 flex cursor-grab gap-6 px-4 active:cursor-grabbing md:px-6 lg:px-8 snap-x snap-mandatory"
         drag="x"
         style={{ x: springX }}
         dragConstraints={{ left: maxDrag, right: 0 }}

@@ -22,7 +22,9 @@ export default function Ofertas() {
 
   if (ofertas.length === 0) return null;
 
-  const cardWidth = 340 + 16;
+  // En mobile (< 768px) las cards son 80vw, en desktop son 340px fijo
+  const cardW = viewportWidth < 768 ? Math.min(340, viewportWidth * 0.8) : 340;
+  const cardWidth = cardW + 16; // card + gap
   const maxDrag = -(ofertas.length * cardWidth - viewportWidth);
 
   return (
@@ -44,7 +46,7 @@ export default function Ofertas() {
 
       <motion.div
         ref={containerRef}
-        className="mt-8 flex cursor-grab gap-4 px-4 active:cursor-grabbing md:px-6 lg:px-8"
+        className="mt-8 flex cursor-grab gap-4 px-4 active:cursor-grabbing md:px-6 lg:px-8 snap-x snap-mandatory"
         drag="x"
         style={{ x: springX }}
         dragConstraints={{ left: maxDrag, right: 0 }}
@@ -58,14 +60,14 @@ export default function Ofertas() {
           return (
             <div
               key={v.id}
-              className="w-[340px] shrink-0 overflow-hidden rounded-lg border border-white/[0.06] bg-surface"
+              className="w-[min(340px,80vw)] shrink-0 snap-start overflow-hidden rounded-lg border border-white/[0.06] bg-surface"
             >
               <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
                   src={v.imagenes[0]}
                   alt={`${v.marca} ${v.modelo} ${v.ano}`}
                   fill
-                  sizes="340px"
+                  sizes="(max-width: 768px) 80vw, 340px"
                   loading="lazy"
                   className="object-cover"
                 />

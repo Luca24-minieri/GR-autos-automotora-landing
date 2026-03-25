@@ -83,7 +83,7 @@ export default function Navbar() {
           </div>
 
           <button
-            className="flex items-center justify-center md:hidden"
+            className="flex h-11 w-11 items-center justify-center md:hidden"
             onClick={() => setMobileOpen(true)}
             aria-label="Abrir menú"
             data-testid="menu-hamburger"
@@ -107,7 +107,7 @@ export default function Navbar() {
               <button
                 onClick={() => setMobileOpen(false)}
                 aria-label="Cerrar menú"
-                className="flex items-center justify-center"
+                className="flex h-11 w-11 items-center justify-center"
               >
                 <X className="h-6 w-6 text-white" />
               </button>
