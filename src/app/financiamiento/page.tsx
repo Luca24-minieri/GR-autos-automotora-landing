@@ -20,8 +20,8 @@ const bancos = [
   "Scotiabank",
   "Tanner",
   "Forum",
-  "Banco Falabella",
-  "BICE",
+  "NuevoCapital",
+  "Eurocapital",
 ];
 
 export default function FinanciamientoPage() {
@@ -122,7 +122,10 @@ export default function FinanciamientoPage() {
             {/* Result */}
             <div className="mt-8 rounded-lg bg-background p-6 text-center">
               <p className="text-sm text-muted-foreground">Tu cuota mensual estimada</p>
-              <p className="mt-2 font-display text-4xl font-bold text-gold md:text-5xl">
+              <p
+                data-testid="resultado-cuota"
+                className="mt-2 font-display text-4xl font-bold text-gold md:text-5xl"
+              >
                 {formatPrecio(cuotaMensual)}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">

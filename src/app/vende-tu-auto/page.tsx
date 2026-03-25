@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "motion/react";
-import { getMarcasUnicas, getModelosPorMarca } from "@/data/vehiculos";
+import { getMarcasUnicas, getModelosPorMarca, getVehiculos, formatPrecio } from "@/data/vehiculos";
 import {
   ClipboardList,
   PhoneCall,
@@ -44,7 +44,25 @@ const estados = ["Excelente", "Bueno", "Regular"];
 export default function VendeTuAutoPage() {
   const marcas = useMemo(() => getMarcasUnicas(), []);
   const [marca, setMarca] = useState("");
+  const [anoTasacion, setAnoTasacion] = useState("");
+  const [kmTasacion, setKmTasacion] = useState("");
   const modelos = useMemo(() => (marca ? getModelosPorMarca(marca) : []), [marca]);
+
+  const estimacion = useMemo(() => {
+    if (!marca || !anoTasacion || !kmTasacion) return null;
+    const ano = Number(anoTasacion);
+    const km = Number(kmTasacion);
+    const todos = getVehiculos();
+    const similares = todos.filter(
+      (v) => v.marca === marca && v.ano >= ano - 1 && v.ano <= ano + 1
+    );
+    if (similares.length === 0) return null;
+    const promedioBase = similares.reduce((sum, v) => sum + v.precio, 0) / similares.length;
+    const kmPromedio = similares.reduce((sum, v) => sum + v.km, 0) / similares.length;
+    const ajusteKm = ((kmPromedio - km) / 10000) * 0.02;
+    const estimado = Math.round(promedioBase * (1 + ajusteKm));
+    return { min: Math.round(estimado * 0.9), max: Math.round(estimado * 1.1) };
+  }, [marca, anoTasacion, kmTasacion]);
 
   return (
     <main className="min-h-screen bg-background pt-24 pb-16">
@@ -123,6 +141,7 @@ export default function VendeTuAutoPage() {
           >
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <select
+                name="marca"
                 value={marca}
                 onChange={(e) => setMarca(e.target.value)}
                 className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white focus:border-gold focus:outline-none"
@@ -142,7 +161,12 @@ export default function VendeTuAutoPage() {
                   </option>
                 ))}
               </select>
-              <select className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white focus:border-gold focus:outline-none">
+              <select
+                name="ano"
+                value={anoTasacion}
+                onChange={(e) => setAnoTasacion(e.target.value)}
+                className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white focus:border-gold focus:outline-none"
+              >
                 <option value="">Año</option>
                 {anios.map((a) => (
                   <option key={a} value={a}>
@@ -153,6 +177,8 @@ export default function VendeTuAutoPage() {
               <input
                 type="number"
                 placeholder="Kilometraje"
+                value={kmTasacion}
+                onChange={(e) => setKmTasacion(e.target.value)}
                 className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white placeholder:text-muted-foreground focus:border-gold focus:outline-none"
               />
               <select className="w-full rounded-lg border border-white/[0.06] bg-surface px-4 py-3 text-sm text-white focus:border-gold focus:outline-none">
@@ -180,6 +206,20 @@ export default function VendeTuAutoPage() {
                 ))}
               </select>
             </div>
+
+            {/* Estimación referencial */}
+            {estimacion && (
+              <div className="rounded-lg border border-gold/30 bg-gold/5 p-5 text-center">
+                <p className="text-sm text-muted-foreground">Estimación referencial</p>
+                <p className="mt-1 font-display text-2xl font-bold text-gold md:text-3xl">
+                  {formatPrecio(estimacion.min)} - {formatPrecio(estimacion.max)}
+                </p>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Esta es una estimación automática. El precio final se determina en la inspección
+                  presencial.
+                </p>
+              </div>
+            )}
 
             <hr className="border-white/[0.06]" />
 

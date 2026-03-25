@@ -1,15 +1,20 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "motion/react";
 import {
   filtrarVehiculos,
   ordenarVehiculos,
   getMarcasUnicas,
+  getVehiculoBySlug,
   type FiltrosVehiculo,
+  type Vehiculo,
 } from "@/data/vehiculos";
 import VehicleCard from "@/components/VehicleCard";
-import { SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { SlidersHorizontal, X, ChevronLeft, ChevronRight, GitCompareArrows } from "lucide-react";
+
+const CompareModal = dynamic(() => import("@/components/CompareModal"), { ssr: false });
 
 const tiposVehiculo = ["Sedán", "SUV", "Camioneta", "Hatchback", "Coupé", "Van"];
 const combustibles = ["Bencina", "Diesel", "Híbrido", "Eléctrico"];
@@ -44,11 +49,24 @@ export default function VehiculosPage() {
   const [orden, setOrden] = useState("recientes");
   const [page, setPage] = useState(1);
   const [mobileFilters, setMobileFilters] = useState(false);
+  const [compareIds, setCompareIds] = useState<string[]>([]);
+  const [showCompare, setShowCompare] = useState(false);
+
+  const toggleCompare = useCallback((id: string) => {
+    setCompareIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : prev.length < 3 ? [...prev, id] : prev
+    );
+  }, []);
 
   const resultados = useMemo(() => {
     const filtered = filtrarVehiculos(filtros);
     return ordenarVehiculos(filtered, orden);
   }, [filtros, orden]);
+
+  const compareVehiculos = useMemo(
+    () => compareIds.map((id) => resultados.find((v) => v.id === id)).filter(Boolean) as Vehiculo[],
+    [compareIds, resultados]
+  );
 
   const totalPages = Math.ceil(resultados.length / PER_PAGE);
   const paginated = resultados.slice((page - 1) * PER_PAGE, page * PER_PAGE);
@@ -190,7 +208,13 @@ export default function VehiculosPage() {
             {paginated.length > 0 ? (
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                 {paginated.map((v) => (
-                  <VehicleCard key={v.id} v={v} />
+                  <VehicleCard
+                    key={v.id}
+                    v={v}
+                    showCompare
+                    isCompared={compareIds.includes(v.id)}
+                    onToggleCompare={toggleCompare}
+                  />
                 ))}
               </div>
             ) : (
@@ -277,6 +301,42 @@ export default function VehiculosPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Compare floating bar */}
+      <AnimatePresence>
+        {compareIds.length > 0 && (
+          <motion.div
+            className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-4 rounded-full border border-white/[0.06] bg-surface px-6 py-3 shadow-xl"
+            initial={{ y: 80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 80, opacity: 0 }}
+            transition={{ type: "spring", damping: 20, stiffness: 300 }}
+          >
+            <span className="text-sm text-white">
+              {compareIds.length} vehículo{compareIds.length > 1 ? "s" : ""} seleccionado
+              {compareIds.length > 1 ? "s" : ""}
+            </span>
+            <button
+              disabled={compareIds.length < 2}
+              onClick={() => setShowCompare(true)}
+              className="flex items-center gap-2 rounded-full bg-gold px-5 py-2 text-sm font-semibold text-black transition-colors hover:bg-gold-hover disabled:opacity-40"
+            >
+              <GitCompareArrows className="h-4 w-4" /> Comparar
+            </button>
+            <button
+              onClick={() => setCompareIds([])}
+              className="text-xs text-white/50 hover:text-white"
+            >
+              Limpiar
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Compare modal */}
+      {showCompare && compareVehiculos.length >= 2 && (
+        <CompareModal vehiculos={compareVehiculos} onClose={() => setShowCompare(false)} />
+      )}
     </main>
   );
 }
