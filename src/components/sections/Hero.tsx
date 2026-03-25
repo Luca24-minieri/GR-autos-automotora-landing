@@ -20,6 +20,7 @@ export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoWrapRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
+  const endPhraseRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -34,7 +35,6 @@ export default function Hero() {
           scrub: 1,
           pin: true,
           onUpdate: (self) => {
-            // Start playing video when transition begins
             if (self.progress > 0.2 && videoRef.current && videoRef.current.paused) {
               videoRef.current.play().catch(() => {});
             }
@@ -43,60 +43,38 @@ export default function Hero() {
       });
 
       // Phase 1 (0% - 60%): Zoom into the car image
-      tl.to(
-        imageRef.current,
-        {
-          scale: 2.2,
-          ease: "power1.in",
-          duration: 0.6,
-        },
-        0
-      );
+      tl.to(imageRef.current, { scale: 2.2, ease: "power1.in", duration: 0.6 }, 0);
 
       // Phase 1: Fade out the hero text
-      tl.to(
-        textRef.current,
-        {
-          opacity: 0,
-          ease: "none",
-          duration: 0.25,
-        },
-        0
-      );
+      tl.to(textRef.current, { opacity: 0, ease: "none", duration: 0.25 }, 0);
 
-      // Phase 2 (30% - 70%): Crossfade — video fades in over the zoomed image
+      // Phase 2 (30% - 70%): Crossfade — video fades in
       tl.fromTo(
         videoWrapRef.current,
         { opacity: 0 },
-        {
-          opacity: 1,
-          ease: "power1.inOut",
-          duration: 0.4,
-        },
+        { opacity: 1, ease: "power1.inOut", duration: 0.4 },
         0.3
       );
 
-      // Phase 2: Simultaneously fade out the car image
-      tl.to(
-        imageRef.current,
-        {
-          opacity: 0,
-          ease: "power1.in",
-          duration: 0.3,
-        },
-        0.4
-      );
+      // Phase 2: Fade out the car image
+      tl.to(imageRef.current, { opacity: 0, ease: "power1.in", duration: 0.3 }, 0.4);
 
-      // Phase 3 (70% - 100%): Slight zoom on the video for depth
+      // Phase 3 (70% - 100%): Slight zoom on the video
       tl.fromTo(
         videoWrapRef.current,
         { scale: 1.05 },
-        {
-          scale: 1,
-          ease: "none",
-          duration: 0.3,
-        },
+        { scale: 1, ease: "none", duration: 0.3 },
         0.7
+      );
+
+      // Phase 4 (80% - 100%): Video fades to black, end phrase appears
+      tl.to(videoWrapRef.current, { opacity: 0, ease: "power2.in", duration: 0.2 }, 0.8);
+
+      tl.fromTo(
+        endPhraseRef.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, ease: "power2.out", duration: 0.2 },
+        0.8
       );
     }, containerRef);
 
@@ -109,7 +87,7 @@ export default function Hero() {
       className="relative h-[200vh] w-full overflow-hidden"
       data-testid="hero"
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0A0A0A]">
         {/* Car exterior image with zoom */}
         <div
           ref={imageRef}
@@ -143,6 +121,20 @@ export default function Hero() {
           >
             <track kind="captions" srcLang="es" label="Español" default />
           </video>
+        </div>
+
+        {/* End phrase — appears after video fades to black */}
+        <div
+          ref={endPhraseRef}
+          className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 opacity-0"
+        >
+          <p className="text-center font-display text-xl font-semibold uppercase tracking-[0.25em] text-gold/80 md:text-2xl lg:text-3xl">
+            No buscamos clientes
+          </p>
+          <p className="mt-2 text-center font-display text-3xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">
+            Creamos experiencias
+          </p>
+          <div className="mt-6 h-px w-16 bg-gold/40" />
         </div>
 
         {/* Hero text */}
