@@ -67,14 +67,14 @@ export default function Hero() {
         0.7
       );
 
-      // Phase 4 (80% - 100%): Video fades to black, end phrase appears
-      tl.to(videoWrapRef.current, { opacity: 0, ease: "power2.in", duration: 0.2 }, 0.8);
+      // Phase 4 (75% - 95%): Video fades to black, end phrase appears
+      tl.to(videoWrapRef.current, { opacity: 0, ease: "power2.in", duration: 0.15 }, 0.75);
 
       tl.fromTo(
         endPhraseRef.current,
-        { opacity: 0, y: 30 },
+        { opacity: 0, y: 40 },
         { opacity: 1, y: 0, ease: "power2.out", duration: 0.2 },
-        0.8
+        0.78
       );
     }, containerRef);
 
@@ -84,7 +84,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative h-[200vh] w-full overflow-hidden"
+      className="relative h-[160vh] w-full overflow-hidden"
       data-testid="hero"
     >
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0A0A0A]">
