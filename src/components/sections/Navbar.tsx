@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const links = [
@@ -62,14 +61,21 @@ export default function Navbar() {
           }`}
         >
           {/* Logo */}
-          <Link href="/" className="group flex items-end gap-0.5">
-            <Image
-              src="/logo-gr.png"
-              alt="GR"
-              width={120}
-              height={60}
-              priority
-              className="h-[36px] w-auto invert mix-blend-screen transition-opacity group-hover:opacity-80 md:h-[42px]"
+          <Link href="/" className="group flex items-end gap-0.5" aria-label="GR Autos - Inicio">
+            <div
+              className="h-[36px] w-[72px] bg-white transition-opacity group-hover:opacity-80 md:h-[42px] md:w-[84px]"
+              style={{
+                maskImage: "url(/logo-gr.png)",
+                WebkitMaskImage: "url(/logo-gr.png)",
+                maskSize: "contain",
+                WebkitMaskSize: "contain",
+                maskRepeat: "no-repeat",
+                WebkitMaskRepeat: "no-repeat",
+                maskPosition: "center",
+                WebkitMaskPosition: "center",
+              }}
+              role="img"
+              aria-hidden="true"
             />
             <span className="mb-[3px] font-display text-lg font-light italic tracking-widest text-white/85 transition-colors group-hover:text-white md:text-xl">
               autos
@@ -143,12 +149,20 @@ export default function Navbar() {
             {/* Mobile header */}
             <div className="flex items-center justify-between px-5 py-5">
               <span className="flex items-end gap-0.5">
-                <Image
-                  src="/logo-gr.png"
-                  alt="GR"
-                  width={120}
-                  height={60}
-                  className="h-[36px] w-auto invert mix-blend-screen"
+                <div
+                  className="h-[36px] w-[72px] bg-white"
+                  style={{
+                    maskImage: "url(/logo-gr.png)",
+                    WebkitMaskImage: "url(/logo-gr.png)",
+                    maskSize: "contain",
+                    WebkitMaskSize: "contain",
+                    maskRepeat: "no-repeat",
+                    WebkitMaskRepeat: "no-repeat",
+                    maskPosition: "center",
+                    WebkitMaskPosition: "center",
+                  }}
+                  role="img"
+                  aria-hidden="true"
                 />
                 <span className="mb-[3px] font-display text-lg font-light italic tracking-widest text-white/85">
                   autos
