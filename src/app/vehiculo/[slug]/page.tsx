@@ -53,7 +53,7 @@ function FinancingTable({ v }: { v: Vehiculo }) {
   return (
     <div>
       <h3 className="font-display text-lg font-semibold text-white">Financiamiento</h3>
-      <div className="mt-3 flex gap-2">
+      <div className="mt-3 flex flex-wrap gap-2">
         {(["pie20", "pie30", "pie40"] as const).map((p) => (
           <button
             key={p}
@@ -392,7 +392,7 @@ export default function VehiculoPage({ params }: { params: Promise<{ slug: strin
                   {formatPrecio(v.precioAnterior)}
                 </p>
               )}
-              <p className="font-display text-3xl font-bold text-gold">{formatPrecio(v.precio)}</p>
+              <p className="break-words font-display text-2xl font-bold text-gold sm:text-3xl">{formatPrecio(v.precio)}</p>
               <span
                 className={`mt-2 inline-block rounded-full px-3 py-1 text-xs font-medium ${
                   v.estado === "disponible"
@@ -452,7 +452,7 @@ export default function VehiculoPage({ params }: { params: Promise<{ slug: strin
                   <p className="mb-2 text-xs text-muted-foreground">
                     ¿Cómo prefieres que te contactemos?
                   </p>
-                  <div className="flex gap-3">
+                  <div className="flex flex-wrap gap-3">
                     {[
                       { value: "whatsapp", label: "WhatsApp" },
                       { value: "llamada", label: "Llamada" },

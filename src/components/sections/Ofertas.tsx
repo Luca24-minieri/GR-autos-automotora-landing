@@ -28,7 +28,7 @@ export default function Ofertas() {
   const maxDrag = -(ofertas.length * cardWidth - viewportWidth);
 
   return (
-    <section className="bg-surface-alt py-16 md:py-24">
+    <section className="overflow-hidden bg-surface-alt py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
         <motion.h2
           className="font-display text-2xl font-bold text-white md:text-4xl lg:text-5xl"

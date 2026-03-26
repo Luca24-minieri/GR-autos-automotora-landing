@@ -14,7 +14,7 @@ export default function Stats() {
   return (
     <section className="bg-surface-alt py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-4">
+        <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-4 md:gap-4">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -24,12 +24,12 @@ export default function Stats() {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
             >
-              <div className="font-display text-3xl font-bold text-gold md:text-4xl lg:text-5xl">
+              <div className="font-display text-2xl font-bold text-gold sm:text-3xl md:text-4xl lg:text-5xl">
                 {stat.prefix}
                 <NumberTicker value={stat.value} />
                 {stat.suffix}
               </div>
-              <p className="mt-2 text-sm text-muted-foreground md:text-base">{stat.label}</p>
+              <p className="mt-2 text-xs text-muted-foreground sm:text-sm md:text-base">{stat.label}</p>
             </motion.div>
           ))}
         </div>

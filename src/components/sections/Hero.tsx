@@ -120,7 +120,7 @@ export default function Hero() {
           <p className="text-center font-display text-xl font-semibold uppercase tracking-[0.25em] text-gold/80 md:text-2xl lg:text-3xl">
             La automotora de alta gama
           </p>
-          <p className="mt-2 text-center font-display text-3xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">
+          <p className="mt-2 text-center font-display text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-5xl lg:text-6xl">
             N°1 en Chile
           </p>
           <div className="mt-6 h-px w-16 bg-gold/40" />
@@ -133,7 +133,7 @@ export default function Hero() {
         >
           {/* Title */}
           <motion.h1
-            className="font-display text-5xl font-bold tracking-tight text-white md:text-7xl lg:text-8xl xl:text-9xl"
+            className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -143,11 +143,11 @@ export default function Hero() {
           </motion.h1>
 
           {/* Tagline */}
-          <div className="mt-4 flex overflow-hidden">
+          <div className="mt-4 flex flex-wrap justify-center overflow-hidden px-4">
             {tagline.split("").map((char, i) => (
               <motion.span
                 key={i}
-                className="font-sans text-lg text-white/80 md:text-xl lg:text-2xl"
+                className="font-sans text-sm text-white/80 sm:text-lg md:text-xl lg:text-2xl"
                 style={{ mixBlendMode: "difference" }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

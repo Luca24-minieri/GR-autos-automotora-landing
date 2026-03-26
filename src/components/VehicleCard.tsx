@@ -89,7 +89,7 @@ export default function VehicleCard({
               {formatPrecio(v.precioAnterior)}
             </p>
           )}
-          <p className="font-display text-xl font-bold text-gold">{formatPrecio(v.precio)}</p>
+          <p className="break-words font-display text-xl font-bold text-gold">{formatPrecio(v.precio)}</p>
         </div>
         <div className="mt-4 flex items-center gap-2">
           <Link

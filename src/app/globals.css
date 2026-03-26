@@ -114,6 +114,8 @@ html {
 body {
   overflow-x: hidden;
   width: 100%;
+  /* Evita que los carousels de drag horizontal bloqueen el scroll vertical */
+  touch-action: pan-y;
 }
 
 /* Touch targets mínimos — solo inputs de texto y selects visibles */

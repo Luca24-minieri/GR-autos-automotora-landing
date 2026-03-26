@@ -158,7 +158,7 @@ export default function Navbar() {
                       <Link
                         href={link.href}
                         onClick={() => setMobileOpen(false)}
-                        className={`font-display text-[28px] font-semibold tracking-tight transition-colors duration-200 ${
+                        className={`block py-1 font-display text-[28px] font-semibold tracking-tight transition-colors duration-200 ${
                           isActive ? "text-gold" : "text-white hover:text-gold"
                         }`}
                       >

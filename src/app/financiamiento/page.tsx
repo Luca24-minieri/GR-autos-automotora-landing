@@ -124,7 +124,7 @@ export default function FinanciamientoPage() {
               <p className="text-sm text-muted-foreground">Tu cuota mensual estimada</p>
               <p
                 data-testid="resultado-cuota"
-                className="mt-2 font-display text-4xl font-bold text-gold md:text-5xl"
+                className="mt-2 break-words font-display text-3xl font-bold text-gold sm:text-4xl md:text-5xl"
               >
                 {formatPrecio(cuotaMensual)}
               </p>

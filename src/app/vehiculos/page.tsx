@@ -226,7 +226,7 @@ export default function VehiculosPage() {
             <div className="flex flex-col justify-end">
               <button
                 onClick={() => setPage(1)}
-                className="flex h-[42px] w-full items-center justify-center gap-2 rounded-lg bg-gold px-6 font-semibold text-white transition-colors hover:bg-gold-hover lg:w-auto"
+                className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-gold px-6 font-semibold text-white transition-colors hover:bg-gold-hover lg:w-auto"
               >
                 <Search className="h-4 w-4" />
                 BUSCAR
@@ -238,7 +238,7 @@ export default function VehiculosPage() {
           <div className="mt-3 flex items-center gap-3">
             <button
               onClick={() => setShowAdvanced((p) => !p)}
-              className="flex items-center gap-1.5 text-xs text-white/50 transition-colors hover:text-white/80"
+              className="flex min-h-[44px] items-center gap-1.5 px-1 text-xs text-white/50 transition-colors hover:text-white/80"
             >
               <ChevronDown
                 className={`h-3.5 w-3.5 transition-transform ${showAdvanced ? "rotate-180" : ""}`}
@@ -248,7 +248,7 @@ export default function VehiculosPage() {
             {hasAnyFilter && (
               <button
                 onClick={clearAll}
-                className="text-xs text-gold/70 transition-colors hover:text-gold"
+                className="min-h-[44px] px-1 text-xs text-gold/70 transition-colors hover:text-gold"
               >
                 Limpiar todo
               </button>
@@ -274,7 +274,7 @@ export default function VehiculosPage() {
                       <button
                         key={tipo}
                         onClick={() => toggleAdvTipo(tipo)}
-                        className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
+                        className={`min-h-[44px] rounded-full px-3.5 py-2 text-xs font-medium transition-colors ${
                           advTipo.includes(tipo)
                             ? "bg-gold text-white"
                             : "border border-white/[0.08] text-white/60 hover:bg-white/5"
@@ -408,7 +408,7 @@ export default function VehiculosPage() {
             </button>
             <button
               onClick={() => setCompareIds([])}
-              className="shrink-0 text-xs text-white/50 hover:text-white"
+              className="flex h-11 w-11 shrink-0 items-center justify-center text-xs text-white/50 hover:text-white"
             >
               Limpiar
             </button>
