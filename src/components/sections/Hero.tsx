@@ -83,12 +83,13 @@ export default function Hero() {
           style={{ transform: "scale(1)" }}
         >
           <Image
-            src="/hero-car.jpg"
+            src="/images/hero-porsche.jpg"
             alt="Porsche 911 GT3 RS - GR Autos"
             fill
             priority
+            quality={90}
             sizes="100vw"
-            className="object-cover"
+            className="object-cover object-center"
           />
         </div>
 
