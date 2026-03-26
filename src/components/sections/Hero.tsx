@@ -126,29 +126,24 @@ export default function Hero() {
           <div className="mt-6 h-px w-16 bg-gold/40" />
         </div>
 
-        {/* Hero text */}
+        {/* Hero text + CTA */}
         <div
           ref={textRef}
           className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4"
         >
-          {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+          {/* Title */}
+          <motion.h1
+            className="font-display text-5xl font-bold tracking-tight text-white md:text-7xl lg:text-8xl xl:text-9xl"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="mb-6"
           >
-            <Image
-              src="/logo-gr-autos.png"
-              alt="GR Autos"
-              width={180}
-              height={140}
-              priority
-              className="h-auto w-[140px] md:w-[180px] lg:w-[220px] drop-shadow-2xl brightness-0 invert"
-            />
-          </motion.div>
+            <span className="text-gold">GR</span>{" "}
+            <span className="font-light italic tracking-wide">Autos</span>
+          </motion.h1>
 
-          <div className="flex overflow-hidden">
+          {/* Tagline */}
+          <div className="mt-4 flex overflow-hidden">
             {tagline.split("").map((char, i) => (
               <motion.span
                 key={i}
@@ -167,22 +162,23 @@ export default function Hero() {
             ))}
           </div>
 
-          {/* CTA Dual */}
+          {/* CTA Buttons */}
           <motion.div
-            className="mt-8 flex flex-col items-center gap-3 sm:flex-row"
+            className="relative z-30 mt-8 flex flex-col items-center gap-3 sm:flex-row"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 0.6, ease: "easeOut" }}
+            style={{ pointerEvents: "auto" }}
           >
             <Link
               href="/vehiculos"
-              className="w-full rounded-full bg-gold px-8 py-3 text-center font-semibold text-white transition-colors hover:bg-gold-hover sm:w-auto"
+              className="block w-full rounded-full bg-gold px-8 py-3 text-center font-semibold text-white transition-colors hover:bg-gold-hover sm:w-auto"
             >
               Compra tu auto
             </Link>
             <Link
               href="/vende-tu-auto"
-              className="w-full rounded-full border border-white/30 px-8 py-3 text-center font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
+              className="block w-full rounded-full border border-white/30 px-8 py-3 text-center font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
             >
               Vende tu auto
             </Link>

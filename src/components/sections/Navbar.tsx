@@ -61,11 +61,13 @@ export default function Navbar() {
           }`}
         >
           {/* Logo */}
-          <Link
-            href="/"
-            className="font-display text-2xl font-bold tracking-tight text-white transition-colors hover:text-gold"
-          >
-            GR Autos
+          <Link href="/" className="group flex items-baseline gap-1">
+            <span className="font-display text-3xl font-bold tracking-tight text-gold transition-colors group-hover:text-gold-hover">
+              GR
+            </span>
+            <span className="font-display text-xl font-light italic tracking-wide text-white/90 transition-colors group-hover:text-white">
+              autos
+            </span>
           </Link>
 
           {/* Desktop links */}
@@ -134,8 +136,9 @@ export default function Navbar() {
           >
             {/* Mobile header */}
             <div className="flex items-center justify-between px-5 py-5">
-              <span className="font-display text-2xl font-bold tracking-tight text-white">
-                GR Autos
+              <span className="flex items-baseline gap-1">
+                <span className="font-display text-3xl font-bold tracking-tight text-gold">GR</span>
+                <span className="font-display text-xl font-light italic tracking-wide text-white/90">autos</span>
               </span>
               <button
                 onClick={() => setMobileOpen(false)}
