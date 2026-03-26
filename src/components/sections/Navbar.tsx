@@ -61,21 +61,11 @@ export default function Navbar() {
           }`}
         >
           {/* Logo */}
-          <Link href="/" className="group flex items-end gap-0.5" aria-label="GR Autos - Inicio">
-            <div
-              className="h-[36px] w-[72px] bg-white transition-opacity group-hover:opacity-80 md:h-[42px] md:w-[84px]"
-              style={{
-                maskImage: "url(/logo-gr.png)",
-                WebkitMaskImage: "url(/logo-gr.png)",
-                maskSize: "contain",
-                WebkitMaskSize: "contain",
-                maskRepeat: "no-repeat",
-                WebkitMaskRepeat: "no-repeat",
-                maskPosition: "center",
-                WebkitMaskPosition: "center",
-              }}
-              role="img"
-              aria-hidden="true"
+          <Link href="/" className="group flex items-end gap-1" aria-label="GR Autos - Inicio">
+            <img
+              src="/logo-gr-clean.png"
+              alt="GR"
+              className="h-[36px] w-auto brightness-0 invert transition-opacity group-hover:opacity-80 md:h-[42px]"
             />
             <span className="mb-[3px] font-display text-lg font-light italic tracking-widest text-white/85 transition-colors group-hover:text-white md:text-xl">
               autos
@@ -148,21 +138,11 @@ export default function Navbar() {
           >
             {/* Mobile header */}
             <div className="flex items-center justify-between px-5 py-5">
-              <span className="flex items-end gap-0.5">
-                <div
-                  className="h-[36px] w-[72px] bg-white"
-                  style={{
-                    maskImage: "url(/logo-gr.png)",
-                    WebkitMaskImage: "url(/logo-gr.png)",
-                    maskSize: "contain",
-                    WebkitMaskSize: "contain",
-                    maskRepeat: "no-repeat",
-                    WebkitMaskRepeat: "no-repeat",
-                    maskPosition: "center",
-                    WebkitMaskPosition: "center",
-                  }}
-                  role="img"
-                  aria-hidden="true"
+              <span className="flex items-end gap-1">
+                <img
+                  src="/logo-gr-clean.png"
+                  alt="GR"
+                  className="h-[36px] w-auto brightness-0 invert"
                 />
                 <span className="mb-[3px] font-display text-lg font-light italic tracking-widest text-white/85">
                   autos
