@@ -61,15 +61,8 @@ export default function Navbar() {
           }`}
         >
           {/* Logo */}
-          <Link href="/" className="group flex items-end gap-1" aria-label="GR Autos - Inicio">
-            <img
-              src="/logo-gr-clean.png"
-              alt="GR"
-              className="h-[28px] w-auto brightness-0 invert transition-opacity group-hover:opacity-80 md:h-[32px]"
-            />
-            <span className="mb-[2px] font-display text-sm font-light italic tracking-widest text-white/85 transition-colors group-hover:text-white md:text-base">
-              autos
-            </span>
+          <Link href="/" className="font-display text-lg font-bold tracking-tight text-white transition-colors hover:text-white/80">
+            GR Autos
           </Link>
 
           {/* Desktop links */}
@@ -138,15 +131,8 @@ export default function Navbar() {
           >
             {/* Mobile header */}
             <div className="flex items-center justify-between px-5 py-5">
-              <span className="flex items-end gap-1">
-                <img
-                  src="/logo-gr-clean.png"
-                  alt="GR"
-                  className="h-[28px] w-auto brightness-0 invert"
-                />
-                <span className="mb-px font-display text-sm font-light italic tracking-widest text-white/85">
-                  autos
-                </span>
+              <span className="font-display text-lg font-bold tracking-tight text-white">
+                GR Autos
               </span>
               <button
                 onClick={() => setMobileOpen(false)}
