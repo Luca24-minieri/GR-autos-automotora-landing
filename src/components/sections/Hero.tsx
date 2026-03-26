@@ -118,10 +118,10 @@ export default function Hero() {
           className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 opacity-0"
         >
           <p className="text-center font-display text-xl font-semibold uppercase tracking-[0.25em] text-gold/80 md:text-2xl lg:text-3xl">
-            No buscamos clientes
+            La automotora de alta gama
           </p>
           <p className="mt-2 text-center font-display text-3xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">
-            Creamos experiencias
+            N°1 en Chile
           </p>
           <div className="mt-6 h-px w-16 bg-gold/40" />
         </div>
