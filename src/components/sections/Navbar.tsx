@@ -65,9 +65,9 @@ export default function Navbar() {
             <img
               src="/logo-gr-clean.png"
               alt="GR"
-              className="h-[36px] w-auto brightness-0 invert transition-opacity group-hover:opacity-80 md:h-[42px]"
+              className="h-[22px] w-auto brightness-0 invert transition-opacity group-hover:opacity-80 md:h-[26px]"
             />
-            <span className="mb-[3px] font-display text-lg font-light italic tracking-widest text-white/85 transition-colors group-hover:text-white md:text-xl">
+            <span className="mb-px font-display text-sm font-light italic tracking-widest text-white/85 transition-colors group-hover:text-white md:text-xl">
               autos
             </span>
           </Link>
@@ -144,7 +144,7 @@ export default function Navbar() {
                   alt="GR"
                   className="h-[36px] w-auto brightness-0 invert"
                 />
-                <span className="mb-[3px] font-display text-lg font-light italic tracking-widest text-white/85">
+                <span className="mb-px font-display text-sm font-light italic tracking-widest text-white/85">
                   autos
                 </span>
               </span>
