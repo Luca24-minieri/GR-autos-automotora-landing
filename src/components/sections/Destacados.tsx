@@ -53,7 +53,7 @@ export default function Destacados() {
         >
           <Link
             href="/vehiculos"
-            className="rounded-full bg-gold px-8 py-3 font-medium text-black transition-colors hover:bg-gold-hover"
+            className="rounded-full bg-gold px-8 py-3 font-medium text-white transition-colors hover:bg-gold-hover"
           >
             Ver catálogo completo
           </Link>

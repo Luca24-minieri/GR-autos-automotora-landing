@@ -93,7 +93,7 @@ export default function VendeTuAutoPage() {
           </motion.p>
           <motion.a
             href="#formulario"
-            className="mt-6 inline-block rounded-full bg-gold px-8 py-3 font-semibold text-black transition-colors hover:bg-gold-hover"
+            className="mt-6 inline-block rounded-full bg-gold px-8 py-3 font-semibold text-white transition-colors hover:bg-gold-hover"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -271,7 +271,7 @@ export default function VendeTuAutoPage() {
             />
             <button
               type="submit"
-              className="w-full rounded-full bg-gold py-3 font-semibold text-black transition-colors hover:bg-gold-hover"
+              className="w-full rounded-full bg-gold py-3 font-semibold text-white transition-colors hover:bg-gold-hover"
             >
               Solicitar tasación gratuita
             </button>

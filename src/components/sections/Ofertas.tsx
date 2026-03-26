@@ -94,7 +94,7 @@ export default function Ofertas() {
                 </div>
                 <Link
                   href={`/vehiculo/${v.slug}`}
-                  className="mt-4 block w-full rounded-full bg-gold py-2.5 text-center text-sm font-medium text-black transition-colors hover:bg-gold-hover"
+                  className="mt-4 block w-full rounded-full bg-gold py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-gold-hover"
                 >
                   Ver oferta
                 </Link>

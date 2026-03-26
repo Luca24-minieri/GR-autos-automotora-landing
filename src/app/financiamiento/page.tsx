@@ -108,7 +108,7 @@ export default function FinanciamientoPage() {
                       onClick={() => setCuotas(n)}
                       className={`flex-1 rounded-lg py-2 text-sm font-medium transition-colors ${
                         cuotas === n
-                          ? "bg-gold text-black"
+                          ? "bg-gold text-white"
                           : "border border-white/10 text-white/70 hover:bg-white/5"
                       }`}
                     >
@@ -141,7 +141,7 @@ export default function FinanciamientoPage() {
               href="https://wa.me/56912345678?text=Hola%2C%20quiero%20consultar%20por%20financiamiento%20automotriz"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-gold py-3 font-medium text-black transition-colors hover:bg-gold-hover"
+              className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-gold py-3 font-medium text-white transition-colors hover:bg-gold-hover"
             >
               <MessageCircle className="h-5 w-5" /> Consultar financiamiento personalizado
             </a>

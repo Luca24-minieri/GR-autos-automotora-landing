@@ -60,7 +60,7 @@ function FinancingTable({ v }: { v: Vehiculo }) {
             onClick={() => setPie(p)}
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
               pie === p
-                ? "bg-gold text-black"
+                ? "bg-gold text-white"
                 : "border border-white/10 text-white/70 hover:bg-white/5"
             }`}
           >
@@ -478,7 +478,7 @@ export default function VehiculoPage({ params }: { params: Promise<{ slug: strin
 
                 <button
                   type="submit"
-                  className="w-full rounded-full bg-gold py-3 font-medium text-black transition-colors hover:bg-gold-hover"
+                  className="w-full rounded-full bg-gold py-3 font-medium text-white transition-colors hover:bg-gold-hover"
                 >
                   Enviar consulta
                 </button>

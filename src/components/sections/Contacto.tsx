@@ -76,7 +76,7 @@ export default function Contacto() {
           />
           <button
             type="submit"
-            className="w-full rounded-full bg-gold py-3 font-medium text-black transition-colors hover:bg-gold-hover md:w-auto md:px-12"
+            className="w-full rounded-full bg-gold py-3 font-medium text-white transition-colors hover:bg-gold-hover md:w-auto md:px-12"
           >
             Enviar mensaje
           </button>

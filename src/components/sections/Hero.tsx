@@ -9,9 +9,6 @@ import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&q=80&auto=format&fit=crop";
-
 const tagline = "Tu próximo auto te espera";
 
 export default function Hero() {
@@ -42,24 +39,17 @@ export default function Hero() {
         },
       });
 
-      // Phase 1 (0% - 60%): Zoom into the car image
       tl.to(imageRef.current, { scale: 2.2, ease: "power1.in", duration: 0.6 }, 0);
-
-      // Phase 1: Fade out the hero text
       tl.to(textRef.current, { opacity: 0, ease: "none", duration: 0.25 }, 0);
 
-      // Phase 2 (30% - 70%): Crossfade — video fades in
       tl.fromTo(
         videoWrapRef.current,
         { opacity: 0 },
         { opacity: 1, ease: "power1.inOut", duration: 0.4 },
         0.3
       );
-
-      // Phase 2: Fade out the car image
       tl.to(imageRef.current, { opacity: 0, ease: "power1.in", duration: 0.3 }, 0.4);
 
-      // Phase 3 (70% - 100%): Slight zoom on the video
       tl.fromTo(
         videoWrapRef.current,
         { scale: 1.05 },
@@ -67,9 +57,7 @@ export default function Hero() {
         0.7
       );
 
-      // Phase 4 (75% - 95%): Video fades to black, end phrase appears
       tl.to(videoWrapRef.current, { opacity: 0, ease: "power2.in", duration: 0.15 }, 0.75);
-
       tl.fromTo(
         endPhraseRef.current,
         { opacity: 0, y: 40 },
@@ -87,16 +75,16 @@ export default function Hero() {
       className="relative h-[160vh] w-full overflow-hidden"
       data-testid="hero"
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0A0A0A]">
-        {/* Car exterior image with zoom */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#080E1A]">
+        {/* Car exterior image */}
         <div
           ref={imageRef}
           className="absolute inset-0 will-change-transform"
           style={{ transform: "scale(1)" }}
         >
           <Image
-            src={HERO_IMAGE}
-            alt="Porsche 911 Carrera - GR Autos"
+            src="/hero-car.jpg"
+            alt="Porsche 911 GT3 RS - GR Autos"
             fill
             priority
             sizes="100vw"
@@ -104,7 +92,7 @@ export default function Hero() {
           />
         </div>
 
-        {/* Car interior video — revealed via crossfade */}
+        {/* Car interior video */}
         <div
           ref={videoWrapRef}
           className="absolute inset-0 opacity-0 will-change-[opacity,transform]"
@@ -123,7 +111,7 @@ export default function Hero() {
           </video>
         </div>
 
-        {/* End phrase — appears after video fades to black */}
+        {/* End phrase */}
         <div
           ref={endPhraseRef}
           className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 opacity-0"
@@ -142,17 +130,24 @@ export default function Hero() {
           ref={textRef}
           className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4"
         >
-          <motion.h1
-            className="font-display text-4xl font-bold tracking-tight text-white md:text-6xl lg:text-7xl xl:text-8xl"
-            style={{ mixBlendMode: "difference" }}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+          {/* Logo */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
+            className="mb-6"
           >
-            GR Autos
-          </motion.h1>
+            <Image
+              src="/logo-gr-autos.png"
+              alt="GR Autos"
+              width={180}
+              height={140}
+              priority
+              className="h-auto w-[140px] md:w-[180px] lg:w-[220px] drop-shadow-2xl brightness-0 invert"
+            />
+          </motion.div>
 
-          <div className="mt-4 flex overflow-hidden">
+          <div className="flex overflow-hidden">
             {tagline.split("").map((char, i) => (
               <motion.span
                 key={i}
@@ -180,7 +175,7 @@ export default function Hero() {
           >
             <Link
               href="/vehiculos"
-              className="w-full rounded-full bg-gold px-8 py-3 text-center font-semibold text-black transition-colors hover:bg-gold-hover sm:w-auto"
+              className="w-full rounded-full bg-gold px-8 py-3 text-center font-semibold text-white transition-colors hover:bg-gold-hover sm:w-auto"
             >
               Compra tu auto
             </Link>

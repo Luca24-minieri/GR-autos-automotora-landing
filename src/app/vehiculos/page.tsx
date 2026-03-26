@@ -226,7 +226,7 @@ export default function VehiculosPage() {
             <div className="flex flex-col justify-end">
               <button
                 onClick={() => setPage(1)}
-                className="flex h-[42px] w-full items-center justify-center gap-2 rounded-lg bg-gold px-6 font-semibold text-black transition-colors hover:bg-gold-hover lg:w-auto"
+                className="flex h-[42px] w-full items-center justify-center gap-2 rounded-lg bg-gold px-6 font-semibold text-white transition-colors hover:bg-gold-hover lg:w-auto"
               >
                 <Search className="h-4 w-4" />
                 BUSCAR
@@ -276,7 +276,7 @@ export default function VehiculosPage() {
                         onClick={() => toggleAdvTipo(tipo)}
                         className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
                           advTipo.includes(tipo)
-                            ? "bg-gold text-black"
+                            ? "bg-gold text-white"
                             : "border border-white/[0.08] text-white/60 hover:bg-white/5"
                         }`}
                       >
@@ -365,7 +365,7 @@ export default function VehiculosPage() {
                   aria-current={p === page ? "page" : undefined}
                   className={`flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium ${
                     p === page
-                      ? "bg-gold text-black"
+                      ? "bg-gold text-white"
                       : "border border-white/[0.06] text-white hover:bg-white/5"
                   }`}
                 >
@@ -401,7 +401,7 @@ export default function VehiculosPage() {
             <button
               disabled={compareIds.length < 2}
               onClick={() => setShowCompare(true)}
-              className="flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-3 py-2 text-xs font-semibold text-black transition-colors hover:bg-gold-hover disabled:opacity-40 sm:gap-2 sm:px-5 sm:text-sm"
+              className="flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-gold-hover disabled:opacity-40 sm:gap-2 sm:px-5 sm:text-sm"
             >
               <GitCompareArrows className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span>Comparar</span>

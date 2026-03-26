@@ -25,7 +25,7 @@ export default function CtaDual() {
         >
           <Link
             href="/vehiculos"
-            className="w-full rounded-full bg-gold px-8 py-4 text-center font-semibold text-black transition-colors hover:bg-gold-hover sm:w-auto"
+            className="w-full rounded-full bg-gold px-8 py-4 text-center font-semibold text-white transition-colors hover:bg-gold-hover sm:w-auto"
           >
             Compra tu auto
           </Link>

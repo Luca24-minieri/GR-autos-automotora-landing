@@ -133,7 +133,7 @@ export default function Catalogo() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <button className="rounded-full bg-gold px-8 py-3 font-medium text-black transition-colors hover:bg-gold-hover">
+          <button className="rounded-full bg-gold px-8 py-3 font-medium text-white transition-colors hover:bg-gold-hover">
             Ver catálogo completo
           </button>
         </motion.div>

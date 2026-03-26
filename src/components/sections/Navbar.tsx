@@ -51,7 +51,7 @@ export default function Navbar() {
       <nav
         className={`fixed top-0 left-0 z-50 w-full transition-all duration-300 ${
           showBg
-            ? "bg-[rgba(10,10,10,0.85)] backdrop-blur-xl border-b border-white/[0.06]"
+            ? "bg-[rgba(8,14,26,0.9)] backdrop-blur-xl border-b border-gold/10"
             : "bg-transparent border-b border-transparent"
         }`}
       >
@@ -104,7 +104,7 @@ export default function Navbar() {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-gold px-6 py-2.5 text-sm font-semibold tracking-wide text-black transition-all duration-200 hover:bg-gold-hover hover:shadow-lg hover:shadow-gold/20"
+              className="rounded-full bg-gold px-6 py-2.5 text-sm font-semibold tracking-wide text-white transition-all duration-200 hover:bg-gold-hover hover:shadow-lg hover:shadow-gold/20"
             >
               Cotizar
             </a>
@@ -126,7 +126,7 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="fixed inset-0 z-[60] flex flex-col bg-[#0A0A0A]"
+            className="fixed inset-0 z-[60] flex flex-col bg-[#080E1A]"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -184,7 +184,7 @@ export default function Navbar() {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full rounded-full bg-gold py-4 text-center text-lg font-bold tracking-wide text-black transition-colors hover:bg-gold-hover"
+                className="block w-full rounded-full bg-gold py-4 text-center text-lg font-bold tracking-wide text-white transition-colors hover:bg-gold-hover"
                 onClick={() => setMobileOpen(false)}
               >
                 Cotizar por WhatsApp

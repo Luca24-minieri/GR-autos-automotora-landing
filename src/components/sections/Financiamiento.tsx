@@ -46,7 +46,7 @@ export default function Financiamiento() {
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-8 inline-block rounded-full bg-gold px-8 py-3 font-medium text-black transition-colors hover:bg-gold-hover"
+            className="mt-8 inline-block rounded-full bg-gold px-8 py-3 font-medium text-white transition-colors hover:bg-gold-hover"
           >
             Simula tu crédito
           </a>

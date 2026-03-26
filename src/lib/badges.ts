@@ -11,7 +11,7 @@ export function getAutoBadges(v: Vehiculo): Badge[] {
   if (v.numeroDuenos === 1)
     badges.push({ label: "Único dueño", color: "bg-green-500/80 text-white" });
   if (v.km < 30000) badges.push({ label: "Poco kilometraje", color: "bg-blue-500/80 text-white" });
-  if (v.ano >= 2024) badges.push({ label: "Semi nuevo", color: "bg-gold/90 text-black" });
+  if (v.ano >= 2024) badges.push({ label: "Semi nuevo", color: "bg-gold/90 text-white" });
   if (v.traccion === "4x4" || v.traccion === "AWD")
     badges.push({ label: "4x4", color: "bg-white/20 text-white" });
   if (v.combustible === "Diesel")
@@ -24,7 +24,7 @@ export function getAutoBadges(v: Vehiculo): Badge[] {
   // Add manual badges
   for (const b of v.badges) {
     if (!badges.some((ab) => ab.label === b)) {
-      badges.push({ label: b, color: "bg-gold/90 text-black" });
+      badges.push({ label: b, color: "bg-gold/90 text-white" });
     }
   }
 
