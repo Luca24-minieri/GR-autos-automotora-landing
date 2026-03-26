@@ -115,7 +115,7 @@ export default function Hero() {
         {/* End phrase */}
         <div
           ref={endPhraseRef}
-          className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 opacity-0"
+          className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center px-6 opacity-0"
         >
           <p className="text-center font-display text-xl font-semibold uppercase tracking-[0.25em] text-gold/80 md:text-2xl lg:text-3xl">
             La automotora de alta gama
