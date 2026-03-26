@@ -52,7 +52,7 @@ export default function Navbar() {
       <nav
         className={`fixed top-0 left-0 z-50 w-full transition-all duration-300 ${
           showBg
-            ? "bg-[rgba(8,14,26,0.9)] backdrop-blur-xl border-b border-gold/10"
+            ? "bg-[rgba(10,10,10,0.85)] backdrop-blur-xl border-b border-white/[0.06]"
             : "bg-transparent border-b border-transparent"
         }`}
       >
@@ -69,7 +69,7 @@ export default function Navbar() {
               width={120}
               height={60}
               priority
-              className="h-[36px] w-auto brightness-0 invert transition-opacity group-hover:opacity-80 md:h-[42px]"
+              className="h-[36px] w-auto invert mix-blend-screen transition-opacity group-hover:opacity-80 md:h-[42px]"
             />
             <span className="mb-[3px] font-display text-lg font-light italic tracking-widest text-white/85 transition-colors group-hover:text-white md:text-xl">
               autos
@@ -134,7 +134,7 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="fixed inset-0 z-[60] flex flex-col bg-[#080E1A]"
+            className="fixed inset-0 z-[60] flex flex-col bg-[#0A0A0A]"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -148,7 +148,7 @@ export default function Navbar() {
                   alt="GR"
                   width={120}
                   height={60}
-                  className="h-[36px] w-auto brightness-0 invert"
+                  className="h-[36px] w-auto invert mix-blend-screen"
                 />
                 <span className="mb-[3px] font-display text-lg font-light italic tracking-widest text-white/85">
                   autos

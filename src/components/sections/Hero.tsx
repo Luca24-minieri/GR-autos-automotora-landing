@@ -75,7 +75,7 @@ export default function Hero() {
       className="relative h-[160vh] w-full overflow-hidden"
       data-testid="hero"
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#080E1A]">
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0A0A0A]">
         {/* Car exterior image */}
         <div
           ref={imageRef}
