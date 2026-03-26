@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const links = [
@@ -61,11 +62,16 @@ export default function Navbar() {
           }`}
         >
           {/* Logo */}
-          <Link href="/" className="group flex items-baseline gap-1">
-            <span className="font-display text-3xl font-bold tracking-tight text-gold transition-colors group-hover:text-gold-hover">
-              GR
-            </span>
-            <span className="font-display text-xl font-light italic tracking-wide text-white/90 transition-colors group-hover:text-white">
+          <Link href="/" className="group flex items-end gap-0.5">
+            <Image
+              src="/logo-gr.png"
+              alt="GR"
+              width={120}
+              height={60}
+              priority
+              className="h-[36px] w-auto brightness-0 invert transition-opacity group-hover:opacity-80 md:h-[42px]"
+            />
+            <span className="mb-[3px] font-display text-lg font-light italic tracking-widest text-white/85 transition-colors group-hover:text-white md:text-xl">
               autos
             </span>
           </Link>
@@ -136,9 +142,17 @@ export default function Navbar() {
           >
             {/* Mobile header */}
             <div className="flex items-center justify-between px-5 py-5">
-              <span className="flex items-baseline gap-1">
-                <span className="font-display text-3xl font-bold tracking-tight text-gold">GR</span>
-                <span className="font-display text-xl font-light italic tracking-wide text-white/90">autos</span>
+              <span className="flex items-end gap-0.5">
+                <Image
+                  src="/logo-gr.png"
+                  alt="GR"
+                  width={120}
+                  height={60}
+                  className="h-[36px] w-auto brightness-0 invert"
+                />
+                <span className="mb-[3px] font-display text-lg font-light italic tracking-widest text-white/85">
+                  autos
+                </span>
               </span>
               <button
                 onClick={() => setMobileOpen(false)}
