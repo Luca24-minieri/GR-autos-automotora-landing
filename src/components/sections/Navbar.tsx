@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const links = [
@@ -60,9 +61,17 @@ export default function Navbar() {
             showBg ? "py-3 lg:py-4" : "py-5 lg:py-6"
           }`}
         >
-          {/* Logo */}
-          <Link href="/" className="font-display text-lg font-bold tracking-tight text-white transition-colors hover:text-white/80">
-            GR Autos
+          {/* Logo — hidden on hero, visible on scroll */}
+          <Link href="/" className="flex h-[20px] items-center" aria-label="GR Autos - Inicio">
+            <Image
+              src="/images/gr-logo.png"
+              alt="GR Autos"
+              width={40}
+              height={20}
+              className={`h-[20px] w-auto transition-opacity duration-300 ${
+                showBg ? "opacity-100" : "opacity-0"
+              }`}
+            />
           </Link>
 
           {/* Desktop links */}
@@ -84,7 +93,6 @@ export default function Navbar() {
                   >
                     {link.label}
                   </span>
-                  {/* Animated underline */}
                   <span
                     className={`absolute bottom-0 left-0 h-px bg-gold transition-all duration-300 ${
                       isActive
@@ -131,9 +139,13 @@ export default function Navbar() {
           >
             {/* Mobile header */}
             <div className="flex items-center justify-between px-5 py-5">
-              <span className="font-display text-lg font-bold tracking-tight text-white">
-                GR Autos
-              </span>
+              <Image
+                src="/images/gr-logo.png"
+                alt="GR Autos"
+                width={40}
+                height={20}
+                className="h-[20px] w-auto"
+              />
               <button
                 onClick={() => setMobileOpen(false)}
                 aria-label="Cerrar menú"

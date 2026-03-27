@@ -133,13 +133,22 @@ export default function Hero() {
         >
           {/* Title */}
           <motion.h1
-            className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl"
+            className="flex items-center gap-3 sm:gap-4 md:gap-5"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <span className="text-gold">GR</span>{" "}
-            <span className="font-light italic tracking-wide">Autos</span>
+            <Image
+              src="/images/gr-logo.png"
+              alt="GR"
+              width={200}
+              height={100}
+              priority
+              className="h-[60px] w-auto sm:h-[80px] md:h-[110px] lg:h-[140px] xl:h-[160px]"
+            />
+            <span className="font-display text-4xl font-light italic tracking-wide text-white sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl">
+              Autos
+            </span>
           </motion.h1>
 
           {/* Tagline */}
