@@ -91,7 +91,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative h-screen md:h-[160vh] w-full overflow-hidden"
+      className="relative h-screen md:h-[130vh] w-full overflow-hidden"
       data-testid="hero"
     >
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0A0A0A]">
@@ -210,16 +210,6 @@ export default function Hero() {
             </Link>
           </motion.div>
 
-          {/* Scroll indicator */}
-          <motion.div
-            className="absolute bottom-8 flex flex-col items-center gap-2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 2, duration: 1 }}
-          >
-            <span className="text-xs uppercase tracking-widest text-white/50">Scroll</span>
-            <div className="h-8 w-px bg-white/30" />
-          </motion.div>
         </div>
       </div>
     </section>
