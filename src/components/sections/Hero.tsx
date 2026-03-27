@@ -138,13 +138,11 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/images/gr-logo.png"
               alt="GR"
-              width={200}
-              height={100}
-              priority
-              className="h-[60px] w-auto sm:h-[80px] md:h-[110px] lg:h-[140px] xl:h-[160px]"
+              className="h-[60px] w-auto bg-transparent object-contain sm:h-[80px] md:h-[110px] lg:h-[140px] xl:h-[160px]"
             />
             <span className="font-display text-4xl font-light italic tracking-wide text-white sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl">
               Autos
