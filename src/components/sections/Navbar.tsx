@@ -63,12 +63,12 @@ export default function Navbar() {
         >
           {/* Logo — hidden on hero, visible on scroll */}
           <Link href="/" className="flex h-[20px] items-center" aria-label="GR Autos - Inicio">
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/images/gr-logo.png"
               alt="GR Autos"
-              width={40}
-              height={20}
-              className={`h-[20px] w-auto transition-opacity duration-300 ${
+              style={{ height: '28px', width: 'auto', maxWidth: '60px' }}
+              className={`transition-opacity duration-300 ${
                 showBg ? "opacity-100" : "opacity-0"
               }`}
             />
