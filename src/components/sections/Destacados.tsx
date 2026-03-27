@@ -30,7 +30,17 @@ export default function Destacados() {
           Nuestra selección de vehículos verificados y con garantía.
         </motion.p>
 
-        <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-6">
+        {/* Mobile carousel */}
+        <div className="mt-10 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide md:hidden">
+          {destacados.map((v) => (
+            <div key={v.id} className="min-w-[280px] snap-center flex-shrink-0">
+              <VehicleCard v={v} />
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop grid — hidden on mobile */}
+        <div className="mt-10 hidden md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-6">
           {destacados.map((v, i) => (
             <motion.div
               key={v.id}

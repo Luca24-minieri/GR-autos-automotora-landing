@@ -535,7 +535,18 @@ export default function VehiculoPage({ params }: { params: Promise<{ slug: strin
         {similares.length > 0 && (
           <div className="mt-16">
             <h2 className="font-display text-2xl font-bold text-white">Vehículos similares</h2>
-            <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+
+            {/* Mobile carousel */}
+            <div className="mt-6 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide md:hidden">
+              {similares.map((s) => (
+                <div key={s.id} className="min-w-[260px] snap-center flex-shrink-0">
+                  <VehicleCard v={s} />
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop grid */}
+            <div className="mt-6 hidden md:grid md:grid-cols-2 lg:grid-cols-3 lg:gap-6 gap-4">
               {similares.map((s) => (
                 <VehicleCard key={s.id} v={s} />
               ))}

@@ -40,19 +40,19 @@ export default function WhyUs() {
           ¿Por qué GR Autos?
         </motion.h2>
 
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-2 md:gap-6 lg:grid-cols-4">
           {blocks.map((block, i) => (
             <motion.div
               key={block.title}
-              className="rounded-lg border border-white/[0.06] bg-surface p-6 text-center transition-colors duration-300 hover:bg-surface-alt"
+              className="rounded-lg border border-white/[0.06] bg-surface p-4 md:p-6 text-center transition-colors duration-300 hover:bg-surface-alt"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
             >
-              <block.icon className="mx-auto h-10 w-10 text-gold" />
+              <block.icon className="mx-auto h-8 w-8 md:h-10 md:w-10 text-gold" />
               <h3 className="mt-4 font-display text-lg font-semibold text-white">{block.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{block.description}</p>
+              <p className="mt-2 text-xs md:text-sm text-muted-foreground">{block.description}</p>
             </motion.div>
           ))}
         </div>

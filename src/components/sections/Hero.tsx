@@ -23,47 +23,66 @@ export default function Hero() {
   useEffect(() => {
     if (prefersReducedMotion || !containerRef.current) return;
 
+    const isMobile = window.innerWidth < 768;
+
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-          pin: true,
-          onUpdate: (self) => {
-            if (self.progress > 0.2 && videoRef.current && videoRef.current.paused) {
-              videoRef.current.play().catch(() => {});
-            }
+      if (isMobile) {
+        // Mobile: scroll corto, solo zoom + fade del texto. Sin video.
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "+=50%",
+            scrub: 1,
+            pin: true,
           },
-        },
-      });
+        });
 
-      tl.to(imageRef.current, { scale: 2.2, ease: "power1.in", duration: 0.6 }, 0);
-      tl.to(textRef.current, { opacity: 0, ease: "none", duration: 0.25 }, 0);
+        tl.to(imageRef.current, { scale: 1.3, ease: "power1.in", duration: 0.6 }, 0);
+        tl.to(textRef.current, { opacity: 0, ease: "none", duration: 0.4 }, 0);
+      } else {
+        // Desktop: animación completa con video y frase final
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+            pin: true,
+            onUpdate: (self) => {
+              if (self.progress > 0.2 && videoRef.current && videoRef.current.paused) {
+                videoRef.current.play().catch(() => {});
+              }
+            },
+          },
+        });
 
-      tl.fromTo(
-        videoWrapRef.current,
-        { opacity: 0 },
-        { opacity: 1, ease: "power1.inOut", duration: 0.4 },
-        0.3
-      );
-      tl.to(imageRef.current, { opacity: 0, ease: "power1.in", duration: 0.3 }, 0.4);
+        tl.to(imageRef.current, { scale: 2.2, ease: "power1.in", duration: 0.6 }, 0);
+        tl.to(textRef.current, { opacity: 0, ease: "none", duration: 0.25 }, 0);
 
-      tl.fromTo(
-        videoWrapRef.current,
-        { scale: 1.05 },
-        { scale: 1, ease: "none", duration: 0.3 },
-        0.7
-      );
+        tl.fromTo(
+          videoWrapRef.current,
+          { opacity: 0 },
+          { opacity: 1, ease: "power1.inOut", duration: 0.4 },
+          0.3
+        );
+        tl.to(imageRef.current, { opacity: 0, ease: "power1.in", duration: 0.3 }, 0.4);
 
-      tl.to(videoWrapRef.current, { opacity: 0, ease: "power2.in", duration: 0.15 }, 0.75);
-      tl.fromTo(
-        endPhraseRef.current,
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, ease: "power2.out", duration: 0.2 },
-        0.78
-      );
+        tl.fromTo(
+          videoWrapRef.current,
+          { scale: 1.05 },
+          { scale: 1, ease: "none", duration: 0.3 },
+          0.7
+        );
+
+        tl.to(videoWrapRef.current, { opacity: 0, ease: "power2.in", duration: 0.15 }, 0.75);
+        tl.fromTo(
+          endPhraseRef.current,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, ease: "power2.out", duration: 0.2 },
+          0.78
+        );
+      }
     }, containerRef);
 
     return () => ctx.revert();
@@ -72,7 +91,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative h-[160vh] w-full overflow-hidden"
+      className="relative h-screen md:h-[160vh] w-full overflow-hidden"
       data-testid="hero"
     >
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0A0A0A]">
