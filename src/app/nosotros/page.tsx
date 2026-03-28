@@ -39,7 +39,7 @@ export default function NosotrosPage() {
   return (
     <main className="min-h-screen bg-background">
       {/* Hero banner */}
-      <section className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24">
+      <section ref={carSectionRef} className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute top-0 left-1/2 h-[400px] w-[800px] -translate-x-1/2 rounded-full bg-gold/[0.05] blur-[120px]" />
         </div>
@@ -67,6 +67,27 @@ export default function NosotrosPage() {
             transition={{ duration: 0.6, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
             style={{ transformOrigin: "left" }}
           />
+
+          {/* Floating 3D car — desktop only, right side of hero */}
+          <motion.div
+            className="pointer-events-none absolute right-[-20px] top-0 z-10 hidden md:block"
+            style={{ y: carY }}
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.23, 1, 0.32, 1] }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/auto-3d.png"
+              alt="Porsche 911 Carrera"
+              style={{
+                height: "300px",
+                width: "auto",
+                maxWidth: "500px",
+                filter: "drop-shadow(0 25px 50px rgba(0,0,0,0.6))",
+              }}
+            />
+          </motion.div>
         </div>
       </section>
 
@@ -112,41 +133,14 @@ export default function NosotrosPage() {
               </motion.div>
             </motion.div>
 
-            {/* Stats column with floating car */}
+            {/* Stats column */}
             <motion.div
-              ref={carSectionRef}
-              className="relative flex flex-col gap-6"
+              className="flex flex-col gap-6"
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
             >
-              {/* Floating 3D car — desktop only */}
-              <motion.div
-                className="pointer-events-none absolute z-10 hidden md:block"
-                style={{
-                  bottom: "-60px",
-                  left: "-40px",
-                  y: carY,
-                }}
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.23, 1, 0.32, 1] }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/auto-3d.png"
-                  alt="Porsche 911 Carrera"
-                  style={{
-                    height: "300px",
-                    width: "auto",
-                    maxWidth: "500px",
-                    filter: "drop-shadow(0 25px 50px rgba(0,0,0,0.6))",
-                  }}
-                />
-              </motion.div>
-
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { value: 500, suffix: "+", label: "Autos vendidos" },
