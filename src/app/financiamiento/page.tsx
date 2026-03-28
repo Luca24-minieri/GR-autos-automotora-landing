@@ -100,7 +100,7 @@ export default function FinanciamientoPage() {
       </section>
 
       {/* Calculator */}
-      <section className="pb-16 md:pb-24">
+      <section className="overflow-hidden pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
             {/* Calculator card */}

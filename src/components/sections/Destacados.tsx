@@ -40,7 +40,7 @@ export default function Destacados() {
         </motion.p>
 
         {/* Mobile carousel */}
-        <div className="mt-10 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide md:hidden">
+        <div className="mt-10 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pr-4 md:hidden">
           {destacados.map((v, i) => (
             <motion.div
               key={v.id}

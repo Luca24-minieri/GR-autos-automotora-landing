@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { MapPin, Navigation, Users, Award, Shield, Clock } from "lucide-react";
 import { NumberTicker } from "@/components/ui/number-ticker";
 
@@ -28,6 +29,13 @@ const valores = [
 ];
 
 export default function NosotrosPage() {
+  const carSectionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: carSectionRef,
+    offset: ["start end", "end start"],
+  });
+  const carY = useTransform(scrollYProgress, [0, 1], [-15, 15]);
+
   return (
     <main className="min-h-screen bg-background">
       {/* Hero banner */}
@@ -63,7 +71,7 @@ export default function NosotrosPage() {
       </section>
 
       {/* Story section */}
-      <section className="pb-16 md:pb-24">
+      <section className="overflow-hidden pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
             <motion.div
@@ -104,14 +112,41 @@ export default function NosotrosPage() {
               </motion.div>
             </motion.div>
 
-            {/* Stats column */}
+            {/* Stats column with floating car */}
             <motion.div
-              className="flex flex-col gap-6"
+              ref={carSectionRef}
+              className="relative flex flex-col gap-6"
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
             >
+              {/* Floating 3D car — desktop only */}
+              <motion.div
+                className="pointer-events-none absolute z-10 hidden md:block"
+                style={{
+                  bottom: "-60px",
+                  left: "-40px",
+                  y: carY,
+                }}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.23, 1, 0.32, 1] }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/auto-3d.png"
+                  alt="Porsche 911 Carrera"
+                  style={{
+                    height: "300px",
+                    width: "auto",
+                    maxWidth: "500px",
+                    filter: "drop-shadow(0 25px 50px rgba(0,0,0,0.6))",
+                  }}
+                />
+              </motion.div>
+
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { value: 500, suffix: "+", label: "Autos vendidos" },
