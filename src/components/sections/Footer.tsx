@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import Link from "next/link";
 
 const links = [
@@ -47,75 +48,94 @@ function TikTokIcon({ className }: { className?: string }) {
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/[0.06] bg-background py-12 md:py-16">
+    <footer className="relative overflow-hidden border-t border-white/[0.06] bg-background py-14 md:py-20">
+      {/* Subtle top glow */}
+      <div className="pointer-events-none absolute top-0 left-1/2 h-px w-[600px] -translate-x-1/2 bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+
       <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 text-center md:grid-cols-3 md:text-left">
+        <div className="grid grid-cols-1 gap-10 text-center md:grid-cols-3 md:text-left">
           {/* Logo + info */}
-          <div>
-            <span className="font-display text-2xl font-bold text-white">GR Autos</span>
-            <p className="mt-3 text-sm text-muted-foreground">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+          >
+            <span className="font-display text-2xl font-bold text-white">
+              GR <span className="text-gold">Autos</span>
+            </span>
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               San Francisco de Asís 150, Of. 329
               <br />
               Vitacura, Santiago, Chile
             </p>
             <p className="mt-2 text-sm text-muted-foreground">+56 9 1234 5678</p>
-          </div>
+          </motion.div>
 
           {/* Nav links */}
-          <div>
-            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-white/60">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.5, delay: 0.08, ease: [0.23, 1, 0.32, 1] }}
+          >
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-white/40">
               Navegación
             </p>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               {links.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-white"
+                    className="text-sm text-muted-foreground transition-colors duration-200 hover:text-white"
                   >
                     {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
           {/* Social */}
-          <div>
-            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-white/60">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.5, delay: 0.16, ease: [0.23, 1, 0.32, 1] }}
+          >
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-white/40">
               Síguenos
             </p>
-            <div className="flex justify-center gap-4 md:justify-start">
-              <a
-                href="#"
-                aria-label="Instagram"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.06] text-white/60 transition-colors hover:text-white"
-              >
-                <InstagramIcon className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                aria-label="Facebook"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.06] text-white/60 transition-colors hover:text-white"
-              >
-                <FacebookIcon className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                aria-label="TikTok"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.06] text-white/60 transition-colors hover:text-white"
-              >
-                <TikTokIcon className="h-5 w-5" />
-              </a>
+            <div className="flex justify-center gap-3 md:justify-start">
+              {[
+                { label: "Instagram", icon: InstagramIcon, href: "#" },
+                { label: "Facebook", icon: FacebookIcon, href: "#" },
+                { label: "TikTok", icon: TikTokIcon, href: "#" },
+              ].map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  aria-label={social.label}
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.06] text-white/50 transition-all duration-200 hover:border-gold/30 hover:bg-gold/10 hover:text-white"
+                >
+                  <social.icon className="h-5 w-5" />
+                </a>
+              ))}
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="mt-12 border-t border-white/[0.06] pt-6 text-center">
-          <p className="text-xs text-muted-foreground">
+        <motion.div
+          className="mt-12 border-t border-white/[0.06] pt-6 text-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <p className="text-xs text-muted-foreground/60">
             &copy; 2026 GR Autos. Todos los derechos reservados.
           </p>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

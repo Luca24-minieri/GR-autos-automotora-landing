@@ -26,7 +26,7 @@ export default function VehicleCard({
   return (
     <div
       data-testid="car-card"
-      className="group relative overflow-hidden rounded-lg border border-white/[0.06] bg-surface transition-shadow duration-300 hover:shadow-lg hover:shadow-gold/5"
+      className="group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-surface transition-all duration-300 hover:border-gold/15 hover:shadow-xl hover:shadow-gold/[0.08]"
     >
       {v.estado === "reservado" && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/60">
@@ -43,14 +43,17 @@ export default function VehicleCard({
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           loading="lazy"
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
+        {/* Gradient overlay on hover */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
         {badges.length > 0 && (
-          <div className="absolute top-2 left-2 flex flex-wrap gap-1">
+          <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1">
             {badges.slice(0, maxBadges).map((badge) => (
               <span
                 key={badge.label}
-                className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${badge.color}`}
+                className={`rounded-full px-2.5 py-0.5 text-xs font-medium backdrop-blur-sm ${badge.color}`}
               >
                 {badge.label}
               </span>
@@ -58,8 +61,8 @@ export default function VehicleCard({
           </div>
         )}
         {v.precioAnterior && (
-          <div className="absolute top-2 right-2">
-            <span className="rounded-full bg-red-500/90 px-2.5 py-0.5 text-xs font-bold text-white">
+          <div className="absolute top-2.5 right-2.5">
+            <span className="rounded-full bg-red-500/90 px-2.5 py-0.5 text-xs font-bold text-white backdrop-blur-sm">
               -{Math.round(((v.precioAnterior - v.precio) / v.precioAnterior) * 100)}%
             </span>
           </div>
@@ -69,13 +72,13 @@ export default function VehicleCard({
       <div className="p-4 md:p-5">
         <p className="flex items-center gap-3 text-xs text-muted-foreground">
           <span>{v.ano}</span>
-          <span>·</span>
+          <span className="h-1 w-1 rounded-full bg-white/20" />
           <span>{v.km.toLocaleString("es-CL")} km</span>
         </p>
-        <h3 className="mt-1 font-display text-lg font-semibold text-white">
+        <h3 className="mt-1.5 font-display text-lg font-semibold text-white">
           {v.marca} {v.modelo}
         </h3>
-        <div className="mt-1.5 flex items-center gap-3 text-xs text-muted-foreground">
+        <div className="mt-2 flex items-center gap-3 text-xs text-muted-foreground">
           <span className="flex items-center gap-1">
             <Fuel className="h-3.5 w-3.5" /> {v.combustible}
           </span>
@@ -94,7 +97,7 @@ export default function VehicleCard({
         <div className="mt-4 flex items-center gap-2">
           <Link
             href={`/vehiculo/${v.slug}`}
-            className="block flex-1 rounded-full border border-white/[0.06] py-2.5 text-center text-sm text-white transition-colors hover:bg-white/5"
+            className="btn-press block flex-1 rounded-full border border-white/[0.06] py-2.5 text-center text-sm font-medium text-white transition-[background-color,border-color] duration-200 hover:border-white/15 hover:bg-white/5"
           >
             Ver detalles
           </Link>
@@ -102,7 +105,7 @@ export default function VehicleCard({
             <label
               data-testid="compare-checkbox"
               aria-label={`${isCompared ? "Quitar de" : "Agregar a"} comparador: ${v.marca} ${v.modelo} ${v.ano}`}
-              className={`flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border transition-colors ${
+              className={`flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border transition-all duration-200 ${
                 isCompared
                   ? "border-gold bg-gold/20 text-gold"
                   : "border-white/[0.06] text-white/40 hover:bg-white/5"

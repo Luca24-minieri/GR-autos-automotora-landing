@@ -85,7 +85,11 @@ export default function Hero() {
       }
     }, containerRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      if (imageRef.current) imageRef.current.style.willChange = "auto";
+      if (videoWrapRef.current) videoWrapRef.current.style.willChange = "auto";
+    };
   }, [prefersReducedMotion]);
 
   return (
@@ -191,20 +195,20 @@ export default function Hero() {
           {/* CTA Buttons */}
           <motion.div
             className="relative z-30 mt-8 flex flex-col items-center gap-3 sm:flex-row"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.5, duration: 0.6, ease: "easeOut" }}
+            transition={{ delay: 1.5, duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
             style={{ pointerEvents: "auto" }}
           >
             <Link
               href="/vehiculos"
-              className="block w-full rounded-full bg-gold px-8 py-3 text-center font-semibold text-white transition-colors hover:bg-gold-hover sm:w-auto"
+              className="btn-press block w-full rounded-full bg-gold px-8 py-3 text-center font-semibold text-white transition-[background-color,box-shadow] duration-200 hover:bg-gold-hover hover:shadow-lg hover:shadow-gold/20 sm:w-auto"
             >
               Compra tu auto
             </Link>
             <Link
               href="/vende-tu-auto"
-              className="block w-full rounded-full border border-white/30 px-8 py-3 text-center font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
+              className="btn-press block w-full rounded-full border border-white/30 px-8 py-3 text-center font-semibold text-white transition-[background-color] duration-200 hover:bg-white/10 sm:w-auto"
             >
               Vende tu auto
             </Link>

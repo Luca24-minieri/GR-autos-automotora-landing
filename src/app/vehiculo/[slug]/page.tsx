@@ -58,7 +58,7 @@ function FinancingTable({ v }: { v: Vehiculo }) {
           <button
             key={p}
             onClick={() => setPie(p)}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+            className={`btn-press rounded-full px-4 py-1.5 text-sm font-medium transition-[background-color,border-color,color] duration-200 ${
               pie === p
                 ? "bg-gold text-white"
                 : "border border-white/10 text-white/70 hover:bg-white/5"
@@ -478,7 +478,7 @@ export default function VehiculoPage({ params }: { params: Promise<{ slug: strin
 
                 <button
                   type="submit"
-                  className="w-full rounded-full bg-gold py-3 font-medium text-white transition-colors hover:bg-gold-hover"
+                  className="btn-press w-full rounded-full bg-gold py-3 font-medium text-white transition-[background-color,box-shadow] duration-200 hover:bg-gold-hover hover:shadow-lg hover:shadow-gold/20"
                 >
                   Enviar consulta
                 </button>
@@ -494,7 +494,7 @@ export default function VehiculoPage({ params }: { params: Promise<{ slug: strin
                   href={`https://wa.me/56912345678?text=${whatsappMsg}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 rounded-full bg-[#25D366] py-3 font-medium text-white"
+                  className="btn-press flex items-center justify-center gap-2 rounded-full bg-[#25D366] py-3 font-medium text-white transition-opacity duration-200 hover:opacity-90"
                 >
                   <MessageCircle className="h-5 w-5" /> Consultar por WhatsApp
                 </a>
@@ -503,13 +503,13 @@ export default function VehiculoPage({ params }: { params: Promise<{ slug: strin
                   href={`https://wa.me/?text=${shareWaMsg}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 rounded-full border border-[#25D366]/30 py-3 text-sm text-[#25D366] transition-colors hover:bg-[#25D366]/10"
+                  className="btn-press flex items-center justify-center gap-2 rounded-full border border-[#25D366]/30 py-3 text-sm text-[#25D366] transition-[background-color] duration-200 hover:bg-[#25D366]/10"
                 >
                   <MessageCircle className="h-4 w-4" /> Compartir por WhatsApp
                 </a>
                 <button
                   onClick={handleShare}
-                  className="flex items-center justify-center gap-2 rounded-full border border-white/10 py-3 text-sm text-white/70 transition-colors hover:bg-white/5"
+                  className="btn-press flex items-center justify-center gap-2 rounded-full border border-white/10 py-3 text-sm text-white/70 transition-[background-color] duration-200 hover:bg-white/5"
                 >
                   {copied ? (
                     <Check className="h-4 w-4 text-green-400" />
@@ -521,7 +521,7 @@ export default function VehiculoPage({ params }: { params: Promise<{ slug: strin
                 <button
                   onClick={handlePdf}
                   disabled={generatingPdf}
-                  className="flex items-center justify-center gap-2 rounded-full border border-white/10 py-3 text-sm text-white/70 transition-colors hover:bg-white/5 disabled:opacity-50"
+                  className="btn-press flex items-center justify-center gap-2 rounded-full border border-white/10 py-3 text-sm text-white/70 transition-[background-color] duration-200 hover:bg-white/5 disabled:opacity-50"
                 >
                   <FileDown className="h-4 w-4" />
                   {generatingPdf ? "Generando..." : "Descargar ficha técnica"}

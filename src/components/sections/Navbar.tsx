@@ -50,16 +50,18 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 z-50 w-full transition-all duration-300 ${
+        className={`fixed top-0 left-0 z-50 w-full border-b transition-[background-color,border-color,backdrop-filter] duration-300 ${
           showBg
-            ? "bg-[rgba(10,10,10,0.85)] backdrop-blur-xl border-b border-white/[0.06]"
-            : "bg-transparent border-b border-transparent"
+            ? "bg-[rgba(10,10,10,0.85)] backdrop-blur-xl border-white/[0.06]"
+            : "bg-transparent border-transparent"
         }`}
+        style={{ transitionTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)' }}
       >
         <div
-          className={`mx-auto flex max-w-7xl items-center justify-between px-5 transition-all duration-300 md:px-8 lg:px-10 ${
+          className={`mx-auto flex max-w-7xl items-center justify-between px-5 transition-[padding] duration-300 md:px-8 lg:px-10 ${
             showBg ? "py-3 lg:py-4" : "py-5 lg:py-6"
           }`}
+          style={{ transitionTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)' }}
         >
           {/* Logo — hidden on hero, visible on scroll */}
           <Link href="/" className="flex h-[20px] items-center" aria-label="GR Autos - Inicio">
@@ -109,7 +111,7 @@ export default function Navbar() {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-gold px-6 py-2.5 text-sm font-semibold tracking-wide text-white transition-all duration-200 hover:bg-gold-hover hover:shadow-lg hover:shadow-gold/20"
+              className="btn-press rounded-full bg-gold px-6 py-2.5 text-sm font-semibold tracking-wide text-white transition-[background-color,box-shadow] duration-200 hover:bg-gold-hover hover:shadow-lg hover:shadow-gold/20"
             >
               Cotizar
             </a>
@@ -135,7 +137,7 @@ export default function Navbar() {
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }}
+            transition={{ type: "tween", duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
           >
             {/* Mobile header */}
             <div className="flex items-center justify-between px-5 py-5">
@@ -193,7 +195,7 @@ export default function Navbar() {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full rounded-full bg-gold py-4 text-center text-lg font-bold tracking-wide text-white transition-colors hover:bg-gold-hover"
+                className="btn-press block w-full rounded-full bg-gold py-4 text-center text-lg font-bold tracking-wide text-white transition-colors hover:bg-gold-hover"
                 onClick={() => setMobileOpen(false)}
               >
                 Cotizar por WhatsApp

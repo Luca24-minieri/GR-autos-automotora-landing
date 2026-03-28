@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import { Marquee } from "@/components/ui/marquee";
 
 const brands = [
@@ -17,17 +18,26 @@ const brands = [
 
 export default function BrandMarquee() {
   return (
-    <section className="bg-surface-alt py-12 md:py-16">
-      <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-        <p className="mb-8 text-center text-sm uppercase tracking-widest text-muted-foreground">
-          Marcas que comercializamos
-        </p>
-      </div>
+    <section className="relative overflow-hidden bg-surface-alt py-14 md:py-20">
+      {/* Fade edges */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-surface-alt to-transparent md:w-32" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-surface-alt to-transparent md:w-32" />
+
+      <motion.p
+        className="mb-10 text-center text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+      >
+        Marcas que comercializamos
+      </motion.p>
+
       <Marquee pauseOnHover className="[--duration:40s] [--gap:3rem]">
         {brands.map((brand) => (
           <div
             key={brand}
-            className="flex h-8 items-center px-4 text-lg font-semibold text-white/40 transition-colors duration-300 hover:text-white md:h-10 md:text-xl lg:h-12 lg:text-2xl"
+            className="flex h-8 items-center px-6 text-xl font-bold tracking-wide text-white/25 transition-colors duration-300 hover:text-white/70 md:h-10 md:text-2xl lg:h-12 lg:text-3xl"
           >
             {brand}
           </div>

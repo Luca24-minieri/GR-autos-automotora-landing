@@ -144,6 +144,62 @@ canvas {
   }
 }
 
+/* ── Emil Design Eng: Custom easing curves ── */
+:root {
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* ── Button press feedback (every pressable element) ── */
+.btn-press {
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.btn-press:active {
+  transform: scale(0.97);
+}
+
+/* ── Hover effects gated for pointer devices only ── */
+@media (hover: hover) and (pointer: fine) {
+  .hover-lift {
+    transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 200ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(59, 89, 152, 0.08);
+  }
+}
+
+/* ── Card hover glow ── */
+@media (hover: hover) and (pointer: fine) {
+  .card-hover {
+    transition: transform 250ms cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 250ms cubic-bezier(0.23, 1, 0.32, 1),
+      border-color 250ms ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(59, 89, 152, 0.1);
+    border-color: rgba(59, 89, 152, 0.15);
+  }
+}
+
+/* ── Social icon hover ── */
+@media (hover: hover) and (pointer: fine) {
+  .social-icon {
+    transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1),
+      background-color 200ms ease,
+      border-color 200ms ease,
+      color 200ms ease;
+  }
+  .social-icon:hover {
+    transform: translateY(-2px) scale(1.05);
+    background-color: rgba(59, 89, 152, 0.1);
+    border-color: rgba(59, 89, 152, 0.3);
+  }
+}
+
 @keyframes wa-pulse {
   0% {
     box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
@@ -160,6 +216,18 @@ canvas {
   animation: wa-pulse 2s infinite;
 }
 
+/* ── Stagger animation for scroll-revealed items ── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -171,10 +239,13 @@ canvas {
   }
 }
 
-@media (max-width: 768px) {
-  * {
-    -webkit-tap-highlight-color: transparent;
-  }
+a,
+button,
+[role="button"],
+label[for],
+input[type="checkbox"],
+input[type="radio"] {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .scrollbar-hide::-webkit-scrollbar {

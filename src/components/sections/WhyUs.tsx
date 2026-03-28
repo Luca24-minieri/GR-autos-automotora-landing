@@ -28,31 +28,52 @@ const blocks = [
 
 export default function WhyUs() {
   return (
-    <section className="bg-background py-16 md:py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-        <motion.h2
-          className="text-center font-display text-2xl font-bold text-white md:text-4xl lg:text-5xl"
-          initial={{ opacity: 0, y: 40 }}
+    <section className="relative overflow-hidden bg-background py-20 md:py-28 lg:py-36">
+      {/* Background glow */}
+      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="h-[500px] w-[500px] rounded-full bg-gold/[0.03] blur-[120px]" />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+        <motion.p
+          className="text-center text-sm font-medium uppercase tracking-[0.2em] text-gold/70"
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+        >
+          Nuestras ventajas
+        </motion.p>
+        <motion.h2
+          className="mt-4 text-center font-display text-3xl font-bold text-white md:text-4xl lg:text-5xl"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, delay: 0.08, ease: [0.23, 1, 0.32, 1] }}
         >
           ¿Por qué GR Autos?
         </motion.h2>
 
-        <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-2 md:gap-6 lg:grid-cols-4">
+        <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-4">
           {blocks.map((block, i) => (
             <motion.div
               key={block.title}
-              className="rounded-lg border border-white/[0.06] bg-surface p-4 md:p-6 text-center transition-colors duration-300 hover:bg-surface-alt"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
+              className="group relative rounded-2xl border border-white/[0.06] bg-surface p-6 md:p-8 text-center transition-colors duration-300 hover:border-gold/20 hover:bg-surface-alt"
+              initial={{ opacity: 0, y: 40, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, delay: i * 0.12, ease: [0.23, 1, 0.32, 1] }}
             >
-              <block.icon className="mx-auto h-8 w-8 md:h-10 md:w-10 text-gold" />
-              <h3 className="mt-4 font-display text-lg font-semibold text-white">{block.title}</h3>
-              <p className="mt-2 text-xs md:text-sm text-muted-foreground">{block.description}</p>
+              {/* Hover glow */}
+              <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gold/[0.03] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
+              <div className="relative">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gold/10 transition-colors duration-300 group-hover:bg-gold/20">
+                  <block.icon className="h-7 w-7 text-gold" />
+                </div>
+                <h3 className="mt-5 font-display text-lg font-semibold text-white">{block.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{block.description}</p>
+              </div>
             </motion.div>
           ))}
         </div>

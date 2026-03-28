@@ -183,17 +183,49 @@ export default function VehiculosPage() {
 
   // ════════════════════════════════════════════════════════════════
   return (
-    <main className="min-h-screen bg-background pt-24 pb-16">
-      <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-        <h1 className="font-display text-2xl font-bold text-white md:text-4xl lg:text-5xl">
-          Nuestro Stock
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground md:text-base">
-          Encuentra el vehículo perfecto para ti.
-        </p>
+    <main className="min-h-screen bg-background">
+      {/* Hero banner */}
+      <section className="relative overflow-hidden pt-28 pb-10 md:pt-36 md:pb-14">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute top-0 left-1/2 h-[300px] w-[600px] -translate-x-1/2 rounded-full bg-gold/[0.04] blur-[100px]" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+          <motion.p
+            className="text-sm font-medium uppercase tracking-[0.2em] text-gold/70"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+          >
+            Catálogo
+          </motion.p>
+          <motion.h1
+            className="mt-3 font-display text-3xl font-bold text-white md:text-5xl lg:text-6xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.08, ease: [0.23, 1, 0.32, 1] }}
+          >
+            Nuestro Stock
+          </motion.h1>
+          <motion.p
+            className="mt-3 text-base text-muted-foreground"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.14, ease: [0.23, 1, 0.32, 1] }}
+          >
+            Encuentra el vehículo perfecto para ti.
+          </motion.p>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-7xl px-4 pb-16 md:px-6 lg:px-8">
 
         {/* ── Quick filter bar ────────────────────────────────── */}
-        <div className="mt-8 rounded-xl border border-white/[0.08] bg-surface p-4 md:p-5">
+        <motion.div
+          className="mt-8 rounded-xl border border-white/[0.08] bg-surface p-4 md:p-5"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.1, ease: [0.23, 1, 0.32, 1] }}
+        >
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_auto]">
             <FilterSelect
               label="Marca"
@@ -226,7 +258,7 @@ export default function VehiculosPage() {
             <div className="flex flex-col justify-end">
               <button
                 onClick={() => setPage(1)}
-                className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-gold px-6 font-semibold text-white transition-colors hover:bg-gold-hover lg:w-auto"
+                className="btn-press flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-gold px-6 font-semibold text-white transition-[background-color,box-shadow] duration-200 hover:bg-gold-hover hover:shadow-lg hover:shadow-gold/20 lg:w-auto"
               >
                 <Search className="h-4 w-4" />
                 BUSCAR
@@ -262,7 +294,7 @@ export default function VehiculosPage() {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.25, ease: "easeInOut" }}
+                transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
                 className="overflow-hidden"
               >
                 <div className="mt-4 border-t border-white/[0.06] pt-4">
@@ -288,7 +320,7 @@ export default function VehiculosPage() {
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </motion.div>
 
         {/* ── Results toolbar ────────────────────────────────── */}
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
@@ -316,14 +348,20 @@ export default function VehiculosPage() {
         <div className="mt-6">
           {paginated.length > 0 ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-              {paginated.map((v) => (
-                <VehicleCard
+              {paginated.map((v, i) => (
+                <motion.div
                   key={v.id}
-                  v={v}
-                  showCompare
-                  isCompared={compareIds.includes(v.id)}
-                  onToggleCompare={toggleCompare}
-                />
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.05, ease: [0.23, 1, 0.32, 1] }}
+                >
+                  <VehicleCard
+                    v={v}
+                    showCompare
+                    isCompared={compareIds.includes(v.id)}
+                    onToggleCompare={toggleCompare}
+                  />
+                </motion.div>
               ))}
             </div>
           ) : (
@@ -401,13 +439,14 @@ export default function VehiculosPage() {
             <button
               disabled={compareIds.length < 2}
               onClick={() => setShowCompare(true)}
-              className="flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-gold-hover disabled:opacity-40 sm:gap-2 sm:px-5 sm:text-sm"
+              className="btn-press flex shrink-0 items-center gap-1.5 rounded-full bg-gold px-3 py-2 text-xs font-semibold text-white transition-[background-color] duration-200 hover:bg-gold-hover disabled:opacity-40 sm:gap-2 sm:px-5 sm:text-sm"
             >
               <GitCompareArrows className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               <span>Comparar</span>
             </button>
             <button
               onClick={() => setCompareIds([])}
+              aria-label="Limpiar selección del comparador"
               className="flex h-11 w-11 shrink-0 items-center justify-center text-xs text-white/50 hover:text-white"
             >
               Limpiar
