@@ -70,7 +70,7 @@ export default function NosotrosPage() {
 
           {/* Floating 3D car — desktop only, right side of hero */}
           <motion.div
-            className="pointer-events-none absolute right-[-20px] top-0 z-10 hidden md:block"
+            className="pointer-events-none absolute right-[-20px] top-[-40px] z-10 hidden md:block"
             style={{ y: carY }}
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
