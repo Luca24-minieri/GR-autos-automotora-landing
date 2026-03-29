@@ -1,5 +1,4 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { supabaseAdmin } from '@/lib/supabase/client';
 import { CLOSER_SYSTEM_PROMPT, INVENTORY_CONTEXT } from '@/lib/chatbot/system-prompt';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -15,6 +14,53 @@ function checkRateLimit(sessionId: string): boolean {
   if (entry.count >= 10) return false;
   entry.count++;
   return true;
+}
+
+async function saveToSupabase(sessionId: string, userMessage: string, assistantMessage: string, analysis: any) {
+  try {
+    const { supabaseAdmin } = await import('@/lib/supabase/client');
+
+    let conversationId: string | null = null;
+    const { data: conversation } = await supabaseAdmin
+      .from('conversations').select('id').eq('session_id', sessionId).single();
+    if (conversation) {
+      conversationId = conversation.id;
+    } else {
+      const { data: newConv } = await supabaseAdmin
+        .from('conversations').insert({ session_id: sessionId }).select('id').single();
+      conversationId = newConv?.id ?? null;
+    }
+
+    if (!conversationId) return;
+
+    await supabaseAdmin.from('messages').insert([
+      { conversation_id: conversationId, role: 'user', content: userMessage },
+      { conversation_id: conversationId, role: 'assistant', content: assistantMessage, metadata: analysis || {} },
+    ]);
+
+    if (analysis) {
+      await supabaseAdmin.from('conversations').update({
+        lead_score: analysis.lead_score,
+        lead_category: analysis.lead_category,
+        last_message_at: new Date().toISOString(),
+        metadata: { intent: analysis.intent, interested_vehicle: analysis.interested_vehicle },
+      }).eq('id', conversationId);
+
+      if (analysis.data_captured && (analysis.data_captured.name || analysis.data_captured.phone || analysis.data_captured.email)) {
+        await supabaseAdmin.from('leads').upsert({
+          conversation_id: conversationId,
+          name: analysis.data_captured.name,
+          phone: analysis.data_captured.phone,
+          email: analysis.data_captured.email,
+          interested_vehicle: analysis.interested_vehicle,
+          lead_score: analysis.lead_score,
+          source: 'chatbot',
+        }, { onConflict: 'conversation_id' });
+      }
+    }
+  } catch (e) {
+    console.warn('Supabase save failed (non-blocking):', e);
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -41,31 +87,6 @@ export async function POST(req: NextRequest) {
           .slice(-20)
       : [];
 
-    // Supabase: buscar o crear conversación
-    let conversationId: string | null = null;
-    try {
-      const { data: conversation } = await supabaseAdmin
-        .from('conversations').select('id').eq('session_id', sessionId).single();
-      if (conversation) {
-        conversationId = conversation.id;
-      } else {
-        const { data: newConv } = await supabaseAdmin
-          .from('conversations').insert({ session_id: sessionId }).select('id').single();
-        conversationId = newConv?.id ?? null;
-      }
-    } catch (dbError) {
-      console.warn('Supabase conversation lookup failed:', dbError);
-    }
-
-    // Guardar mensaje del usuario
-    if (conversationId) {
-      try {
-        await supabaseAdmin.from('messages').insert({
-          conversation_id: conversationId, role: 'user', content: message,
-        });
-      } catch (e) { console.warn('Failed to save user message:', e); }
-    }
-
     // Llamar a Claude
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
     const messages = [...history, { role: 'user' as const, content: message }];
@@ -88,51 +109,15 @@ export async function POST(req: NextRequest) {
     // Limpiar respuesta
     const cleanResponse = assistantMessage.replace(/%%%JSON_START%%%[\s\S]*?%%%JSON_END%%%/, '').trim();
 
-    // Guardar respuesta del asistente
-    if (conversationId) {
-      try {
-        await supabaseAdmin.from('messages').insert({
-          conversation_id: conversationId, role: 'assistant', content: cleanResponse, metadata: analysis || {},
-        });
-      } catch (e) { console.warn('Failed to save assistant message:', e); }
-    }
-
-    // Actualizar lead score
-    if (analysis && conversationId) {
-      try {
-        await supabaseAdmin.from('conversations').update({
-          lead_score: analysis.lead_score,
-          lead_category: analysis.lead_category,
-          last_message_at: new Date().toISOString(),
-          metadata: { intent: analysis.intent, interested_vehicle: analysis.interested_vehicle },
-        }).eq('id', conversationId);
-
-        if (analysis.data_captured && (analysis.data_captured.name || analysis.data_captured.phone || analysis.data_captured.email)) {
-          await supabaseAdmin.from('leads').upsert({
-            conversation_id: conversationId,
-            name: analysis.data_captured.name,
-            phone: analysis.data_captured.phone,
-            email: analysis.data_captured.email,
-            interested_vehicle: analysis.interested_vehicle,
-            lead_score: analysis.lead_score,
-            source: 'chatbot',
-          }, { onConflict: 'conversation_id' });
-        }
-      } catch (e) { console.warn('Failed to update lead data:', e); }
-    }
+    // Guardar en Supabase en background (no bloquea la respuesta)
+    saveToSupabase(sessionId, message, cleanResponse, analysis).catch(() => {});
 
     return NextResponse.json({
       message: cleanResponse,
       analysis: analysis ? { leadCategory: analysis.lead_category, suggestedAction: analysis.suggested_action } : null,
     });
   } catch (error: any) {
-    console.error('=== CHAT ERROR START ===');
-    console.error('Error type:', typeof error);
-    console.error('Error message:', error?.message);
-    console.error('Error status:', error?.status);
-    console.error('Error name:', error?.name);
-    console.error('Full error:', error);
-    console.error('=== CHAT ERROR END ===');
+    console.error('Chat API Error:', error?.message || error);
 
     if (error?.status === 429) {
       return NextResponse.json({ error: 'El asistente está momentáneamente ocupado.' }, { status: 429 });
