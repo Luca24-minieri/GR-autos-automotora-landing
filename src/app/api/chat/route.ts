@@ -2,18 +2,6 @@ import Anthropic from '@anthropic-ai/sdk';
 import { supabaseAdmin } from '@/lib/supabase/client';
 import { CLOSER_SYSTEM_PROMPT, INVENTORY_CONTEXT } from '@/lib/chatbot/system-prompt';
 import { NextRequest, NextResponse } from 'next/server';
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
-
-function getApiKeyFromEnvLocal(): string {
-  try {
-    const envPath = resolve(process.cwd(), '.env.local');
-    const content = readFileSync(envPath, 'utf-8');
-    const match = content.match(/^ANTHROPIC_API_KEY=(.+)$/m);
-    if (match) return match[1].trim();
-  } catch (e) {}
-  return process.env.ANTHROPIC_API_KEY!;
-}
 
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
@@ -30,7 +18,6 @@ function checkRateLimit(sessionId: string): boolean {
 }
 
 export async function POST(req: NextRequest) {
-  console.log('API Key prefix:', process.env.ANTHROPIC_API_KEY?.substring(0, 15));
   try {
     const body = await req.json();
     const { message, sessionId, conversationHistory } = body;
@@ -80,9 +67,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Llamar a Claude
-    const apiKey = getApiKeyFromEnvLocal();
-    console.log('Using API Key prefix:', apiKey.substring(0, 20));
-    const anthropic = new Anthropic({ apiKey });
+    const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
     const messages = [...history, { role: 'user' as const, content: message }];
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
