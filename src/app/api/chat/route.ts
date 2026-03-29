@@ -124,7 +124,14 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(
-      { error: 'Disculpa, tuve un problema procesando tu mensaje. ¿Puedes intentar de nuevo?' },
+      {
+        error: 'Disculpa, tuve un problema procesando tu mensaje. ¿Puedes intentar de nuevo?',
+        debug: {
+          message: error?.message?.substring(0, 200),
+          status: error?.status,
+          name: error?.name,
+        },
+      },
       { status: 500 }
     );
   }
