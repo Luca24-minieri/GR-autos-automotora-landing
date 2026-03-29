@@ -8,7 +8,5 @@ const ChatWidget = dynamic(
 );
 
 export function ChatProvider() {
-  const isEnabled = process.env.NEXT_PUBLIC_CHAT_ENABLED === 'true';
-  if (!isEnabled) return null;
   return <ChatWidget />;
 }
