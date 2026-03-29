@@ -87,8 +87,8 @@ export async function POST(req: NextRequest) {
           .slice(-20)
       : [];
 
-    // Llamar a Claude
-    const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
+    // Llamar a Claude (strip whitespace in case env var got corrupted on paste)
+    const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!.replace(/\s/g, '') });
     const messages = [...history, { role: 'user' as const, content: message }];
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
