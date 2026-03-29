@@ -4,6 +4,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import Navbar from "@/components/sections/Navbar";
 import Footer from "@/components/sections/Footer";
+import { ChatProvider } from "@/components/chatbot/ChatProvider";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -38,6 +39,7 @@ export default function RootLayout({
           {children}
           <Footer />
         </SmoothScroll>
+        <ChatProvider />
       </body>
     </html>
   );
