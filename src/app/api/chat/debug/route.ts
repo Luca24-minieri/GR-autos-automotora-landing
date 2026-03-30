@@ -1,16 +1,17 @@
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  const key = process.env.ANTHROPIC_API_KEY || '';
+  const rawKey = process.env.ANTHROPIC_API_KEY || '';
+  const cleanKey = rawKey.replace(/\s/g, '');
 
-  // Test direct API call with fetch (bypass SDK)
-  let apiTestResult: any = null;
+  // Test with RAW key (as Vercel stores it)
+  let rawKeyTest: any = null;
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        'x-api-key': key.trim(),
+        'x-api-key': rawKey,
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
@@ -19,21 +20,45 @@ export async function GET() {
         messages: [{ role: 'user', content: 'hi' }],
       }),
     });
-    const data = await res.json();
-    apiTestResult = { status: res.status, body: JSON.stringify(data).substring(0, 300) };
+    rawKeyTest = { status: res.status };
   } catch (e: any) {
-    apiTestResult = { error: e.message };
+    rawKeyTest = { error: e.message };
+  }
+
+  // Test with CLEANED key (whitespace stripped)
+  let cleanKeyTest: any = null;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-api-key': cleanKey,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 10,
+        messages: [{ role: 'user', content: 'hi' }],
+      }),
+    });
+    cleanKeyTest = { status: res.status };
+  } catch (e: any) {
+    cleanKeyTest = { error: e.message };
+  }
+
+  // Find where the spaces are
+  const spacePositions: number[] = [];
+  for (let i = 0; i < rawKey.length; i++) {
+    if (rawKey[i] === ' ' || rawKey[i] === '\t') spacePositions.push(i);
   }
 
   return NextResponse.json({
-    keyLength: key.length,
-    keyTrimmedLength: key.trim().length,
-    keyPrefix: key.substring(0, 20),
-    keySuffix: key.substring(key.length - 10),
-    hasLeadingSpace: key !== key.trimStart(),
-    hasTrailingSpace: key !== key.trimEnd(),
-    hasNewline: key.includes('\n') || key.includes('\r'),
-    charCodes: Array.from(key.substring(0, 5)).map(c => c.charCodeAt(0)),
-    apiTestResult,
+    rawKeyLength: rawKey.length,
+    cleanKeyLength: cleanKey.length,
+    spacePositions,
+    rawKeySuffix: rawKey.substring(rawKey.length - 15),
+    cleanKeySuffix: cleanKey.substring(cleanKey.length - 15),
+    rawKeyTest,
+    cleanKeyTest,
   });
 }
