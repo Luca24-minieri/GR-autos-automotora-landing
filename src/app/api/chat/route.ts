@@ -5,11 +5,12 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
-function checkRateLimit(sessionId: string): boolean {
+function checkRateLimit(ip: string, sessionId: string): boolean {
+  const key = `${ip}:${sessionId}`;
   const now = Date.now();
-  const entry = rateLimitMap.get(sessionId);
+  const entry = rateLimitMap.get(key);
   if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(sessionId, { count: 1, resetAt: now + 60000 });
+    rateLimitMap.set(key, { count: 1, resetAt: now + 60000 });
     return true;
   }
   if (entry.count >= 10) return false;
@@ -19,7 +20,7 @@ function checkRateLimit(sessionId: string): boolean {
 
 async function saveToSupabase(sessionId: string, userMessage: string, assistantMessage: string, analysis: any) {
   try {
-    const { supabaseAdmin } = await import('@/lib/supabase/client');
+    const { supabaseAdmin } = await import('@/lib/supabase/admin');
 
     let conversationId: string | null = null;
     const { data: conversation } = await supabaseAdmin
@@ -72,10 +73,11 @@ export async function POST(req: NextRequest) {
     if (!message || typeof message !== 'string' || message.length > 2000) {
       return NextResponse.json({ error: 'Mensaje inválido' }, { status: 400 });
     }
-    if (!sessionId || typeof sessionId !== 'string') {
+    if (!sessionId || typeof sessionId !== 'string' || sessionId.length > 64) {
       return NextResponse.json({ error: 'Session inválida' }, { status: 400 });
     }
-    if (!checkRateLimit(sessionId)) {
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? req.headers.get('x-real-ip') ?? 'unknown';
+    if (!checkRateLimit(ip, sessionId)) {
       return NextResponse.json(
         { error: 'Demasiados mensajes. Espera un momento antes de continuar.' },
         { status: 429 }
@@ -86,6 +88,7 @@ export async function POST(req: NextRequest) {
       ? conversationHistory
           .filter((m: any) => m && typeof m.role === 'string' && typeof m.content === 'string' && ['user', 'assistant'].includes(m.role))
           .slice(-20)
+          .map((m: any) => ({ ...m, content: m.content.substring(0, 2000) }))
       : [];
 
     // Build dynamic inventory from Supabase
@@ -134,14 +137,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(
-      {
-        error: 'Disculpa, tuve un problema procesando tu mensaje. ¿Puedes intentar de nuevo?',
-        debug: {
-          message: error?.message?.substring(0, 200),
-          status: error?.status,
-          name: error?.name,
-        },
-      },
+      { error: 'Disculpa, tuve un problema procesando tu mensaje. ¿Puedes intentar de nuevo?' },
       { status: 500 }
     );
   }

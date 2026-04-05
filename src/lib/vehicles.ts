@@ -97,7 +97,7 @@ function mapToVehiculo(v: Vehicle): Vehiculo {
     precioAnterior: v.precio_original ?? undefined,
     combustible: v.combustible,
     transmision: v.transmision,
-    tipoVehiculo: v.condicion,
+    tipoVehiculo: '',
     motor: v.motor ?? '',
     potencia: '',
     colorExterior: v.color,
@@ -177,12 +177,7 @@ export async function getVehiculoBySlug(slug: string): Promise<Vehiculo | null> 
 export function incrementClicks(vehicleId: string): void {
   supabase.rpc('increment_clicks', { vehicle_id: vehicleId }).then(({ error }) => {
     if (error) {
-      // Fallback: update directo
-      supabase
-        .from('vehicles')
-        .update({ clicks: undefined as any })
-        .eq('id', vehicleId)
-        .then(() => {});
+      console.warn('incrementClicks RPC failed:', error.message);
     }
   });
 }
