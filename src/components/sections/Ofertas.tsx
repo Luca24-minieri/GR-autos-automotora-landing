@@ -4,10 +4,14 @@ import { useRef, useMemo, useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { getVehiculos, formatPrecio } from "@/data/vehiculos";
+import { type Vehiculo, formatPrecio } from "@/lib/vehicles";
 
-export default function Ofertas() {
-  const ofertas = useMemo(() => getVehiculos().filter((v) => v.precioAnterior), []);
+interface OfertasProps {
+  vehiculos?: Vehiculo[];
+}
+
+export default function Ofertas({ vehiculos = [] }: OfertasProps) {
+  const ofertas = useMemo(() => vehiculos.filter((v) => v.precioAnterior), [vehiculos]);
   const x = useMotionValue(0);
   const springX = useSpring(x, { stiffness: 300, damping: 30 });
   const containerRef = useRef<HTMLDivElement>(null);

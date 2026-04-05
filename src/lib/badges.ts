@@ -1,4 +1,4 @@
-import { type Vehiculo } from "@/data/vehiculos";
+import { type Vehiculo } from "@/lib/vehicles";
 
 export interface Badge {
   label: string;

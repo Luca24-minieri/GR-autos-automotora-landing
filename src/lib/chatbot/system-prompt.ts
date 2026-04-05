@@ -87,15 +87,4 @@ Campos del JSON:
 - suggested_action: "none" | "follow_up" | "schedule_visit" | "connect_executive" | "send_info"
 `;
 
-export const INVENTORY_CONTEXT = `
-## INVENTARIO ACTUAL (usa SOLO estos vehículos en tus recomendaciones)
-
-1. Porsche 911 Carrera 4S — Año 2021, 15.000 km, Blanco, automático. Precio: Consultar con ejecutivo.
-2. BMW X5 xDrive40i — Año 2022, 22.000 km, Negro, automático. Precio: Consultar con ejecutivo.
-3. Mercedes-Benz GLC 300 4Matic — Año 2023, 8.000 km, Gris Selenita, automático. Precio: Consultar con ejecutivo.
-4. Audi Q7 45 TFSI — Año 2021, 35.000 km, Azul Navarra, automático. Precio: Consultar con ejecutivo.
-5. Toyota Hilux SRX 4x4 — Año 2023, 12.000 km, Blanco Perlado, automático. Precio: Consultar con ejecutivo.
-6. Jeep Grand Cherokee Limited — Año 2022, 18.000 km, Verde Oscuro, automático. Precio: Consultar con ejecutivo.
-7. Volvo XC60 T8 Hybrid — Año 2023, 5.000 km, Plateado, automático. Precio: Consultar con ejecutivo.
-8. Land Rover Defender 110 — Año 2022, 20.000 km, Verde Pangea, automático. Precio: Consultar con ejecutivo.
-`;
+// INVENTORY_CONTEXT is now built dynamically from Supabase in the chat API route

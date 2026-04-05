@@ -2,11 +2,15 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
-import { getVehiculosDestacados } from "@/data/vehiculos";
+import { type Vehiculo } from "@/lib/vehicles";
 import VehicleCard from "@/components/VehicleCard";
 
-export default function Destacados() {
-  const destacados = getVehiculosDestacados();
+interface DestacadosProps {
+  vehiculos?: Vehiculo[];
+}
+
+export default function Destacados({ vehiculos = [] }: DestacadosProps) {
+  if (vehiculos.length === 0) return null;
 
   return (
     <section className="bg-background py-20 md:py-28 lg:py-36">
@@ -41,7 +45,7 @@ export default function Destacados() {
 
         {/* Mobile carousel */}
         <div className="mt-10 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pr-4 md:hidden">
-          {destacados.map((v, i) => (
+          {vehiculos.map((v, i) => (
             <motion.div
               key={v.id}
               className="min-w-[280px] snap-center flex-shrink-0"
@@ -57,7 +61,7 @@ export default function Destacados() {
 
         {/* Desktop grid */}
         <div className="mt-12 hidden md:grid md:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-6">
-          {destacados.map((v, i) => (
+          {vehiculos.map((v, i) => (
             <motion.div
               key={v.id}
               initial={{ opacity: 0, y: 40, scale: 0.96 }}

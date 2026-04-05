@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { motion } from "motion/react";
 import { Marquee } from "@/components/ui/marquee";
-import { formatPrecio } from "@/data/vehiculos";
+import { formatPrecio } from "@/lib/vehicles";
 import { ShieldCheck, Clock, Building2, MessageCircle, Calculator } from "lucide-react";
 
 const TASA = 0.012;

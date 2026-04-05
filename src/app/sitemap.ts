@@ -1,9 +1,9 @@
-import { getVehiculos } from "@/data/vehiculos";
+import { getVehiculos } from "@/lib/vehicles";
 
 const BASE = "https://gr-autos-landing.vercel.app";
 
-export default function sitemap() {
-  const vehiculos = getVehiculos();
+export default async function sitemap() {
+  const vehiculos = await getVehiculos();
   const vehiculoUrls = vehiculos.map((v) => ({
     url: `${BASE}/vehiculo/${v.slug}`,
     lastModified: v.fechaIngreso,

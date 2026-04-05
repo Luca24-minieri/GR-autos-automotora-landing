@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { type Vehiculo, formatPrecio } from "@/data/vehiculos";
+import { type Vehiculo, formatPrecio } from "@/lib/vehicles";
 import { getAutoBadges } from "@/lib/badges";
 import { Fuel, Settings } from "lucide-react";
 
@@ -22,20 +22,16 @@ export default function VehicleCard({
   onToggleCompare,
 }: VehicleCardProps) {
   const badges = getAutoBadges(v);
+  const isVendido = v.estado === "vendido";
+  const isReservado = v.estado === "reservado";
 
   return (
     <div
       data-testid="car-card"
-      className="group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-surface transition-all duration-300 hover:border-gold/15 hover:shadow-xl hover:shadow-gold/[0.08]"
+      className={`group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-surface transition-all duration-300 hover:border-gold/15 hover:shadow-xl hover:shadow-gold/[0.08] ${
+        isVendido ? "opacity-75" : ""
+      }`}
     >
-      {v.estado === "reservado" && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/60">
-          <span className="rounded-full bg-yellow-500/90 px-4 py-1.5 text-sm font-bold text-black">
-            RESERVADO
-          </span>
-        </div>
-      )}
-
       <div className="relative aspect-[16/10] overflow-hidden">
         <Image
           src={v.imagenes[0]}
@@ -48,7 +44,25 @@ export default function VehicleCard({
         {/* Gradient overlay on hover */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-        {badges.length > 0 && (
+        {/* Vendido: overlay oscuro + badge centrado */}
+        {isVendido && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/60">
+            <span className="rounded-lg bg-red-600 px-4 py-2 text-sm font-bold uppercase tracking-wider text-white">
+              VENDIDO
+            </span>
+          </div>
+        )}
+
+        {/* Reservado: badge esquina superior derecha */}
+        {isReservado && (
+          <div className="absolute top-0 right-0 z-10">
+            <span className="rounded-bl-lg bg-amber-500/90 px-3 py-1 text-xs font-bold uppercase text-white">
+              RESERVADO
+            </span>
+          </div>
+        )}
+
+        {badges.length > 0 && !isVendido && (
           <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1">
             {badges.slice(0, maxBadges).map((badge) => (
               <span
@@ -60,7 +74,7 @@ export default function VehicleCard({
             ))}
           </div>
         )}
-        {v.precioAnterior && (
+        {v.precioAnterior && !isVendido && (
           <div className="absolute top-2.5 right-2.5">
             <span className="rounded-full bg-red-500/90 px-2.5 py-0.5 text-xs font-bold text-white backdrop-blur-sm">
               -{Math.round(((v.precioAnterior - v.precio) / v.precioAnterior) * 100)}%
@@ -87,21 +101,25 @@ export default function VehicleCard({
           </span>
         </div>
         <div className="mt-3">
-          {v.precioAnterior && (
+          {v.precioAnterior && !isVendido && (
             <p className="text-xs text-muted-foreground line-through">
               {formatPrecio(v.precioAnterior)}
             </p>
           )}
-          <p className="break-words font-display text-xl font-bold text-gold">{formatPrecio(v.precio)}</p>
+          <p className={`break-words font-display text-xl font-bold ${
+            isVendido ? "text-muted-foreground line-through" : "text-gold"
+          }`}>
+            {formatPrecio(v.precio)}
+          </p>
         </div>
         <div className="mt-4 flex items-center gap-2">
           <Link
             href={`/vehiculo/${v.slug}`}
             className="btn-press block flex-1 rounded-full border border-white/[0.06] py-2.5 text-center text-sm font-medium text-white transition-[background-color,border-color] duration-200 hover:border-white/15 hover:bg-white/5"
           >
-            Ver detalles
+            {isVendido ? "Ver vehículo" : "Ver detalles"}
           </Link>
-          {showCompare && (
+          {showCompare && !isVendido && (
             <label
               data-testid="compare-checkbox"
               aria-label={`${isCompared ? "Quitar de" : "Agregar a"} comparador: ${v.marca} ${v.modelo} ${v.ano}`}

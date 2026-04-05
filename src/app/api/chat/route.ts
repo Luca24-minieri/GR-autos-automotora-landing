@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { CLOSER_SYSTEM_PROMPT, INVENTORY_CONTEXT } from '@/lib/chatbot/system-prompt';
+import { CLOSER_SYSTEM_PROMPT } from '@/lib/chatbot/system-prompt';
+import { getVehiculos, formatPrecio } from '@/lib/vehicles';
 import { NextRequest, NextResponse } from 'next/server';
 
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -87,13 +88,22 @@ export async function POST(req: NextRequest) {
           .slice(-20)
       : [];
 
+    // Build dynamic inventory from Supabase
+    const vehicles = await getVehiculos();
+    const inventoryText = vehicles.length > 0
+      ? vehicles.map((v, i) =>
+          `${i + 1}. ${v.marca} ${v.modelo} — Año ${v.ano}, ${v.km.toLocaleString('es-CL')} km, ${v.colorExterior}, ${v.transmision}, ${v.combustible}. Precio: ${formatPrecio(v.precio)}.${v.estado === 'reservado' ? ' (RESERVADO)' : ''}`
+        ).join('\n')
+      : 'No hay vehículos disponibles en este momento.';
+    const inventoryContext = `## INVENTARIO ACTUAL (usa SOLO estos vehículos en tus recomendaciones)\n\n${inventoryText}`;
+
     // Llamar a Claude (strip whitespace in case env var got corrupted on paste)
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!.replace(/\s/g, '') });
     const messages = [...history, { role: 'user' as const, content: message }];
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1024,
-      system: `${CLOSER_SYSTEM_PROMPT}\n\n${INVENTORY_CONTEXT}`,
+      system: `${CLOSER_SYSTEM_PROMPT}\n\n${inventoryContext}`,
       messages,
     });
 

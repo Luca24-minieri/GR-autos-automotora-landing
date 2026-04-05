@@ -1,24 +1,11 @@
-"use client";
+import { getVehiculosDestacados, getVehiculos } from "@/lib/vehicles";
+import HomeClient from "@/components/HomeClient";
 
-import dynamic from "next/dynamic";
-import Hero from "@/components/sections/Hero";
+export default async function Home() {
+  const [destacados, todosVehiculos] = await Promise.all([
+    getVehiculosDestacados(),
+    getVehiculos(),
+  ]);
 
-const Destacados = dynamic(() => import("@/components/sections/Destacados"));
-const Stats = dynamic(() => import("@/components/sections/Stats"));
-const WhyUs = dynamic(() => import("@/components/sections/WhyUs"));
-const BrandMarquee = dynamic(() => import("@/components/sections/BrandMarquee"));
-const CtaDual = dynamic(() => import("@/components/sections/CtaDual"));
-const Testimonios = dynamic(() => import("@/components/sections/Testimonios"));
-export default function Home() {
-  return (
-    <main>
-      <Hero />
-      <Destacados />
-      <Stats />
-      <WhyUs />
-      <BrandMarquee />
-      <CtaDual />
-      <Testimonios />
-    </main>
-  );
+  return <HomeClient destacados={destacados} todosVehiculos={todosVehiculos} />;
 }

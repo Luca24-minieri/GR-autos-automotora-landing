@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { type Vehiculo, formatPrecio } from "@/data/vehiculos";
+import { type Vehiculo, formatPrecio } from "@/lib/vehicles";
 import { X, MessageCircle } from "lucide-react";
 
 interface Props {
