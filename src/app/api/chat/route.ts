@@ -3,6 +3,20 @@ import { CLOSER_SYSTEM_PROMPT } from '@/lib/chatbot/system-prompt';
 import { getVehiculos, formatPrecio } from '@/lib/vehicles';
 import { NextRequest, NextResponse } from 'next/server';
 
+const ALLOWED_ORIGINS = [
+  'https://gr-autos-landing.vercel.app',
+  'http://localhost:3000',
+  'http://localhost:3001',
+];
+
+function checkOrigin(req: NextRequest): NextResponse | null {
+  const origin = req.headers.get('origin');
+  // Allow requests with no origin (server-side, curl, etc. in dev)
+  if (!origin) return null;
+  if (ALLOWED_ORIGINS.some((allowed) => origin === allowed || origin.endsWith('.vercel.app'))) return null;
+  return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+}
+
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
 function checkRateLimit(ip: string, sessionId: string): boolean {
@@ -66,6 +80,9 @@ async function saveToSupabase(sessionId: string, userMessage: string, assistantM
 }
 
 export async function POST(req: NextRequest) {
+  const originError = checkOrigin(req);
+  if (originError) return originError;
+
   try {
     const body = await req.json();
     const { message, sessionId, conversationHistory } = body;
