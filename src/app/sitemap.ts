@@ -1,5 +1,7 @@
 import { getVehiculos } from "@/lib/vehicles";
 
+export const dynamic = "force-dynamic";
+
 const BASE = "https://gr-autos-landing.vercel.app";
 
 export default async function sitemap() {
