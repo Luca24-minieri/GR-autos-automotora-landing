@@ -95,7 +95,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative h-screen md:h-[130vh] w-full overflow-hidden"
+      className="relative h-screen md:h-[110vh] w-full overflow-hidden"
       data-testid="hero"
     >
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0A0A0A]">
