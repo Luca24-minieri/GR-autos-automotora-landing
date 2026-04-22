@@ -106,8 +106,8 @@ export default function Hero() {
           style={{ transform: "scale(1)" }}
         >
           <Image
-            src="/images/hero-porsche.jpg"
-            alt="Porsche 911 GT3 RS - GR Autos"
+            src="/images/hero-grautos.webp"
+            alt="GR Autos - La automotora de alta gama"
             fill
             priority
             quality={90}
