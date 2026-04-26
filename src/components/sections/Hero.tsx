@@ -4,16 +4,19 @@ import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Image from "next/image";
 import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const tagline = "Tu próximo auto te espera";
+const HERO_VIDEO_SRC = "/videos/grautos-hero.mp4";
+
+// Píxeles de scroll por segundo de video (calibrado para luxury feel).
+const PX_PER_SECOND_DESKTOP = 550;
+const PX_PER_SECOND_MOBILE = 340;
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoWrapRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -21,118 +24,181 @@ export default function Hero() {
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (prefersReducedMotion || !containerRef.current) return;
+    if (!containerRef.current) return;
 
-    const isMobile = window.innerWidth < 768;
+    const video = videoRef.current;
+    const wrap = videoWrapRef.current;
 
-    const ctx = gsap.context(() => {
-      if (isMobile) {
-        // Mobile: scroll corto, solo zoom + fade del texto. Sin video.
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "+=50%",
-            scrub: 1,
-            pin: true,
-          },
-        });
+    // Reduced motion: sin scrub, sin pin. Video estático en frame 0.
+    if (prefersReducedMotion) {
+      if (wrap) wrap.style.opacity = "1";
+      return;
+    }
 
-        tl.to(imageRef.current, { scale: 1.3, ease: "power1.in", duration: 0.6 }, 0);
-        tl.to(textRef.current, { opacity: 0, ease: "none", duration: 0.4 }, 0);
-      } else {
-        // Desktop: animación completa con video y frase final
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1,
-            pin: true,
-            onUpdate: (self) => {
-              if (self.progress > 0.2 && videoRef.current && videoRef.current.paused) {
-                videoRef.current.play().catch(() => {});
-              }
-            },
-          },
-        });
+    if (!video) return;
 
-        tl.to(imageRef.current, { scale: 2.2, ease: "power1.in", duration: 0.6 }, 0);
-        tl.to(textRef.current, { opacity: 0, ease: "none", duration: 0.25 }, 0);
+    let ctx: gsap.Context | null = null;
+    let cancelled = false;
 
-        tl.fromTo(
-          videoWrapRef.current,
-          { opacity: 0 },
-          { opacity: 1, ease: "power1.inOut", duration: 0.4 },
-          0.3
-        );
-        tl.to(imageRef.current, { opacity: 0, ease: "power1.in", duration: 0.3 }, 0.4);
+    const setupScrub = () => {
+      if (cancelled) return;
 
-        tl.fromTo(
-          videoWrapRef.current,
-          { scale: 1.05 },
-          { scale: 1, ease: "none", duration: 0.3 },
-          0.7
-        );
+      const duration = video.duration;
+      if (!Number.isFinite(duration) || duration <= 0) return;
 
-        tl.to(videoWrapRef.current, { opacity: 0, ease: "power2.in", duration: 0.15 }, 0.75);
-        tl.fromTo(
-          endPhraseRef.current,
-          { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, ease: "power2.out", duration: 0.2 },
-          0.78
-        );
+      // Evitar autoplay involuntario y dejar el video bajo control del scroll.
+      video.pause();
+      try {
+        video.currentTime = 0;
+      } catch {
+        /* ignore */
       }
-    }, containerRef);
+
+      ctx = gsap.context(() => {
+        const mm = gsap.matchMedia();
+
+        mm.add(
+          {
+            isMobile: "(max-width: 767px)",
+            isDesktop: "(min-width: 768px)",
+          },
+          (context) => {
+            const { isDesktop } = context.conditions as {
+              isMobile: boolean;
+              isDesktop: boolean;
+            };
+
+            const pxPerSec = isDesktop
+              ? PX_PER_SECOND_DESKTOP
+              : PX_PER_SECOND_MOBILE;
+            const scrubDistance = Math.round(duration * pxPerSec);
+
+            const tl = gsap.timeline({
+              scrollTrigger: {
+                trigger: containerRef.current,
+                start: "top top",
+                end: () => `+=${scrubDistance}`,
+                scrub: 0.5,
+                pin: true,
+                anticipatePin: 1,
+                invalidateOnRefresh: true,
+                onEnter: () => {
+                  if (wrap) wrap.style.willChange = "opacity, transform";
+                },
+                onLeave: () => {
+                  if (wrap) wrap.style.willChange = "auto";
+                },
+                onLeaveBack: () => {
+                  if (wrap) wrap.style.willChange = "auto";
+                },
+              },
+            });
+
+            // Reveal sutil del video al inicio del pin.
+            tl.fromTo(
+              wrap,
+              { opacity: 0.6, scale: 1.06 },
+              { opacity: 1, scale: 1, ease: "power1.out", duration: 0.08 },
+              0,
+            );
+
+            // Texto principal se desvanece en el primer ~25% del scroll.
+            tl.to(
+              textRef.current,
+              { opacity: 0, scale: 1.04, ease: "none", duration: 0.25 },
+              0,
+            );
+
+            // CORE: video.currentTime atado linealmente al progreso del scroll.
+            // duration: 1 → ocupa todo el timeline.
+            tl.to(
+              video,
+              { currentTime: duration, ease: "none", duration: 1 },
+              0,
+            );
+
+            // Frase final aparece sobre los últimos frames.
+            if (isDesktop) {
+              tl.fromTo(
+                endPhraseRef.current,
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, ease: "power2.out", duration: 0.12 },
+                0.86,
+              );
+            }
+          },
+        );
+      }, containerRef);
+    };
+
+    // Necesitamos buffer completo (no sólo metadata) para que el seek sea fluido.
+    // canplaythrough = el navegador estima que puede reproducir hasta el final sin pausas.
+    let initialized = false;
+    const tryInit = () => {
+      if (initialized || cancelled) return;
+      if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+      initialized = true;
+      setupScrub();
+    };
+
+    // Failsafe: si canplaythrough no dispara en 3s pero tenemos metadata + algo de buffer, arrancamos igual.
+    const failsafeTimer = window.setTimeout(() => {
+      if (!initialized && video.readyState >= 2) tryInit();
+    }, 3000);
+
+    if (video.readyState >= 4 /* HAVE_ENOUGH_DATA */) {
+      tryInit();
+    } else {
+      video.addEventListener("canplaythrough", tryInit, { once: true });
+      video.addEventListener("loadedmetadata", () => {
+        // Forzar descarga proactiva del buffer.
+        try {
+          video.load();
+        } catch {
+          /* ignore */
+        }
+      }, { once: true });
+    }
 
     return () => {
-      ctx.revert();
-      if (imageRef.current) imageRef.current.style.willChange = "auto";
-      if (videoWrapRef.current) videoWrapRef.current.style.willChange = "auto";
+      cancelled = true;
+      window.clearTimeout(failsafeTimer);
+      video.removeEventListener("canplaythrough", tryInit);
+      if (ctx) ctx.revert();
+      if (wrap) wrap.style.willChange = "auto";
+      try {
+        video.pause();
+      } catch {
+        /* ignore */
+      }
+      ScrollTrigger.refresh();
     };
   }, [prefersReducedMotion]);
 
   return (
     <section
       ref={containerRef}
-      className="relative h-screen md:h-[110vh] w-full overflow-hidden"
+      className="relative h-screen w-full overflow-hidden"
       data-testid="hero"
     >
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0A0A0A]">
-        {/* Car exterior image */}
-        <div
-          ref={imageRef}
-          className="absolute inset-0 will-change-transform"
-          style={{ transform: "scale(1)" }}
-        >
-          <Image
-            src="/images/hero-grautos.webp"
-            alt="GR Autos - La automotora de alta gama"
-            fill
-            priority
-            quality={90}
-            sizes="100vw"
-            className="object-cover object-center"
-          />
-        </div>
-
-        {/* Car interior video */}
+        {/* Hero video — único asset visual, scroll-scrubbed */}
         <div
           ref={videoWrapRef}
-          className="absolute inset-0 opacity-0 will-change-[opacity,transform]"
+          className="absolute inset-0"
+          style={{ opacity: prefersReducedMotion ? 1 : 0.6 }}
         >
           <video
             ref={videoRef}
             className="h-full w-full object-cover"
-            src="/hero-interior.mp4"
+            src={HERO_VIDEO_SRC}
             muted
-            loop
             playsInline
             preload="auto"
-            aria-label="Interior de vehículo GR Autos"
-          >
-            <track kind="captions" srcLang="es" label="Español" default />
-          </video>
+            disablePictureInPicture
+            aria-label="GR Autos — animación de presentación"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
         </div>
 
         {/* End phrase */}
@@ -154,7 +220,6 @@ export default function Hero() {
           ref={textRef}
           className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4"
         >
-          {/* Title */}
           <motion.h1
             className="flex items-center gap-3 sm:gap-4 md:gap-5"
             initial={{ opacity: 0, y: 30 }}
@@ -165,20 +230,21 @@ export default function Hero() {
             <img
               src="/images/gr-logo.png"
               alt="GR"
-              style={{ height: '80px', width: 'auto', maxWidth: '200px' }}
+              style={{ height: "80px", width: "auto", maxWidth: "200px" }}
             />
             <span className="font-display text-4xl font-light italic tracking-wide text-white sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl">
               Autos
             </span>
           </motion.h1>
 
-          {/* Tagline */}
-          <div className="mt-4 flex flex-wrap justify-center overflow-hidden px-4">
+          <div
+            className="mt-4 flex flex-wrap justify-center overflow-hidden px-4"
+            style={{ mixBlendMode: "difference" }}
+          >
             {tagline.split("").map((char, i) => (
               <motion.span
                 key={i}
                 className="font-sans text-sm text-white/80 sm:text-lg md:text-xl lg:text-2xl"
-                style={{ mixBlendMode: "difference" }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
@@ -187,12 +253,11 @@ export default function Hero() {
                   ease: "easeOut",
                 }}
               >
-                {char === " " ? "\u00A0" : char}
+                {char === " " ? " " : char}
               </motion.span>
             ))}
           </div>
 
-          {/* CTA Buttons */}
           <motion.div
             className="relative z-30 mt-8 flex flex-col items-center gap-3 sm:flex-row"
             initial={{ opacity: 0, y: 16 }}
@@ -213,7 +278,6 @@ export default function Hero() {
               Vende tu auto
             </Link>
           </motion.div>
-
         </div>
       </div>
     </section>
